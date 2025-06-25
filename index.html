@@ -1,0 +1,47 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OddFit — Rewriting the Size Guide</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+  <script defer src="js/email.js"></script>
+</head>
+<body>
+  <header>
+    <img src="images/logo.png" alt="OddFit Logo" class="logo" />
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="sizing.html">Sizing</a>
+      <a href="products.html">Products</a>
+      <a href="faq.html">FAQ</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
+  <main>
+    <section class="hero">
+      <h1>Rewriting the size guide</h1>
+      <p>Clothing that fits you, not the chart.</p>
+      <button onclick="openPopup()">Notify Me</button>
+    </section>
+    <section class="instagram">
+      <h2>Follow Us on Instagram</h2>
+      <iframe src="https://snapwidget.com/embed/your-widget-id" class="insta-frame" allowtransparency="true"></iframe>
+    </section>
+  </main>
+  <div id="popup" class="popup">
+    <div class="popup-content">
+      <h3>Get Notified</h3>
+      <input type="email" id="userEmail" placeholder="Enter your email" required />
+      <div>
+        <button onclick="sendEmail()">OK</button>
+        <button onclick="closePopup()">Cancel</button>
+      </div>
+      <p id="statusMessage"></p>
+    </div>
+  </div>
+</body>
+</html>
