@@ -32,6 +32,18 @@ body {
 }
 
 /* Drawer */
+/* Drawer Header with Close Button */
+.drawer-header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
+
+.close-icon {
+  font-size: 20px;
+  cursor: pointer;
+}
+
 .drawer {
   position: fixed;
   top: 0;
@@ -75,20 +87,24 @@ body {
   display: block;
 }
 
+/* Make CTA buttons stack vertically */
 .cta-buttons {
   position: absolute;
   bottom: 30px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
+  flex-direction: column;
   gap: 12px;
+  width: 80%;
 }
 
 .cta-buttons button {
-  padding: 12px 20px;
+  padding: 12px;
   font-size: 14px;
   font-weight: bold;
   background: white;
   border: none;
   cursor: pointer;
+  width: 100%;
 }
