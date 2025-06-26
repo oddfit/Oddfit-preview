@@ -84,7 +84,7 @@ body {
 
 .hero img {
   width: 100%;
-  height: 75vh; /* Or adjust to 70vh if needed */
+  height: 60vh; /* Or adjust to 70vh if needed */
   object-fit: cover;
 }
 
