@@ -1,0 +1,94 @@
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Body */
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #fff;
+  color: #333;
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 20px;
+  background-color: #fff;
+  border-bottom: 1px solid #eee;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
+
+.logo img {
+  height: 38px;
+  width: auto;
+}
+
+.menu-icons i {
+  font-size: 1.3rem;
+  margin-left: 16px;
+  cursor: pointer;
+  color: #333;
+}
+
+/* Hero */
+.hero {
+  position: relative;
+  width: 100%;
+}
+
+.hero img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* CTA Buttons */
+.cta-buttons {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cta-buttons button {
+  padding: 12px 24px;
+  background-color: #fff;
+  color: #000;
+  border: none;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transition: background-color 0.3s ease;
+}
+
+.cta-buttons button:hover {
+  background-color: #f0f0f0;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .logo {
+    font-size: 1.3rem;
+  }
+
+  .menu-icons i {
+    font-size: 1.1rem;
+    margin-left: 12px;
+  }
+
+  .cta-buttons button {
+    font-size: 0.9rem;
+    padding: 10px 20px;
+  }
+}
