@@ -117,37 +117,47 @@ body {
 }
 .info-boxes {
   display: flex;
-  justify-content: space-between;
-  align-items: stretch;
-  height: 40vh;
-  padding: 10px;
   gap: 10px;
-  box-sizing: border-box;
+  padding: 20px 12px;
+  justify-content: space-between;
 }
 
 .box {
   flex: 1;
-  font-size: 13px;
-  text-align: center;
-  padding: 14px;
+  padding: 20px;
   border-radius: 8px;
-  line-height: 1.4;
+  text-align: center;
+  font-size: 14px;
 }
 
-.box.why {
-  background-color: #d8ff00;
-}
-
-.box.instagram {
-  background-color: #b2fff6;
-}
 .box h3 {
-  font-size: 1.4em;
-  margin-bottom: 10px;
-  color: #8E3B80; /* Your brand purple */
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #000;
 }
 
 .box p {
-  font-size: 1em;
-  margin: 5px 0;
+  font-size: 0.95em;
+  margin-bottom: 14px;
+  line-height: 1.4;
+}
+
+.box-button {
+  background: white;
+  border: none;
+  padding: 10px 14px;
+  font-weight: bold;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9em;
+  color: #000;
+}
+
+.box.pink {
+  background-color: #ffe5ec;
+}
+
+.box.blue {
+  background-color: #c3f5f7;
 }
