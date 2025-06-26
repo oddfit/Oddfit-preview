@@ -80,6 +80,10 @@
       const drawer = document.getElementById("drawer");
       drawer.classList.toggle("open");
     }
+   function scrollToSection(id) {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+   }
   </script>
 </body>
 </html>
