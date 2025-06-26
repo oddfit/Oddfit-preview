@@ -87,7 +87,6 @@ body {
   display: block;
 }
 
-/* Make CTA buttons stack vertically */
 .cta-buttons {
   position: absolute;
   bottom: 30px;
@@ -97,14 +96,21 @@ body {
   flex-direction: column;
   gap: 12px;
   width: 80%;
+  max-width: 300px;
+  z-index: 1;
 }
 
-.cta-buttons button {
-  padding: 12px;
-  font-size: 14px;
+.cta-button {
+  background-color: #fff;
+  color: #000;
   font-weight: bold;
-  background: white;
+  text-transform: uppercase;
   border: none;
+  padding: 16px;
+  font-size: 14px;
   cursor: pointer;
+  letter-spacing: 1px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  border-radius: 4px;
   width: 100%;
 }
