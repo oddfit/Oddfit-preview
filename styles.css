@@ -128,16 +128,34 @@ body {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  padding: 10px 12px;
+  padding: 20px 12px;
   justify-content: space-between;
+  align-items: stretch; /* Ensure all boxes are same height */
 }
 
 .box {
   flex: 1 1 calc(50% - 10px);
-  padding: 10px;
+  padding: 20px;
   border-radius: 8px;
   text-align: center;
-  font-size: 12px;
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Distribute content */
+}
+
+.box-button {
+  align-self: center; /* Center horizontally */
+  margin-top: auto;   /* Push to bottom */
+  background: white;
+  border: none;
+  padding: 10px 14px;
+  font-weight: bold;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9em;
+  color: #000;
+  text-align: center;
 }
 
 .box h3 {
@@ -151,18 +169,6 @@ body {
   font-size: 0.95em;
   margin-bottom: 14px;
   line-height: 1.4;
-}
-
-.box-button {
-  background: white;
-  border: none;
-  padding: 10px 14px;
-  font-weight: bold;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 0.9em;
-  color: #000;
-  text-align: center;
 }
 
 .box.pink {
