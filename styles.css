@@ -15,7 +15,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 15px;
+  padding: 20px 10px;
   background-color: white;
   border-bottom: 1px solid #eee;
 }
@@ -34,7 +34,7 @@ body {
 }
 
 .logo img {
-  height: 45px;
+  height: 40px;
 }
 
 /* Drawer */
@@ -45,7 +45,7 @@ body {
 }
 
 .close-icon {
-  font-size: 20px;
+  font-size: 25px;
   cursor: pointer;
 }
 
