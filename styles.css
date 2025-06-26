@@ -85,8 +85,14 @@ body {
 /* Hero Section */
 .hero {
   position: relative;
-  height: 60vh;
+  height: 80vh; /* Default for desktop */
   overflow: hidden;
+}
+
+@media (max-width: 768px) {
+  .hero {
+    height: 60vh; /* Smaller height on mobile */
+  }
 }
 
 .hero img {
@@ -180,4 +186,11 @@ body {
 
 .box.blue {
   background-color: #c3f5f7;
+}
+
+.cta-button:hover,
+.box-button:hover {
+  background-color: #f0f0f0;
+  transform: scale(1.02);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
