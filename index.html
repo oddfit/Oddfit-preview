@@ -17,15 +17,29 @@
 </head>
 <body>
   <header class="navbar">
-    <div class="logo">
-  <img src="logo_mini.png" alt="OddFit Logo" />
-</div>
-    <div class="menu-icons">
-      <i class="fas fa-bars"></i>
+    <div class="nav-left">
+      <i class="fas fa-bars menu-icon" onclick="toggleDrawer()"></i>
+    </div>
+    <div class="nav-center">
+      <img src="logo_mini.png" alt="OddFit Logo" class="logo">
+    </div>
+    <div class="nav-right">
       <i class="fas fa-search"></i>
+      <i class="fas fa-heart"></i>
       <i class="fas fa-shopping-bag"></i>
     </div>
   </header>
+
+  <aside id="drawer" class="drawer">
+    <ul>
+      <li><a href="#">Shop Women</a></li>
+      <li><a href="#">Shop Men</a></li>
+      <li><a href="#">New Arrivals</a></li>
+      <li><a href="#">Sale</a></li>
+      <li><a href="#">Contact</a></li>
+      <li><a href="#">Login</a></li>
+    </ul>
+  </aside>
 
   <main>
     <section class="hero">
