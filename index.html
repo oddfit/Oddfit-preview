@@ -1,60 +1,136 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>OddFit — Rewriting the Size Guide</title>
-  <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body, html { font-family:'Segoe UI',sans-serif; background: #fff; color: #333; }.site-header {
+  position: sticky; top:0; background:#fff;
+  display:flex; justify-content:space-between;
+  align-items:center; padding:14px 10px;
+  z-index:100;
+  box-shadow:0 1px 4px rgba(0,0,0,0.1);
+}
+.logo { height:38px; }
+.menu-toggle {
+  background:none; border:none; font-size:24px;
+}
+.mobile-nav {
+  display:none; flex-direction:column;
+  background:#fff; text-align:center;
+}
+.mobile-nav.show {
+  display:flex;
+}
+.mobile-nav a {
+  padding:12px; border-bottom:1px solid #eee;
+  text-decoration:none; color:#333;
+}
+
+main { padding: 20px 16px; }
+.hero-slider {
+  width:100%; height:260px; margin-bottom: 20px;
+}
+.swiper-slide {
+  display:flex; justify-content:center; align-items:center;
+}
+.swiper-slide img {
+  width:100%; height:100%; object-fit:cover;
+  border-radius:8px;
+}
+
+.products-preview {
+  margin-top: 16px;
+  display:grid;
+  grid-template-columns:1fr;
+  gap:16px;
+}
+.product-card {
+  background:#fff;
+  padding:12px;
+  text-align:center;
+  border-radius:8px;
+  box-shadow:0 2px 6px rgba(0,0,0,0.1);
+}
+.product-card img {
+  width:100%; border-radius:4px;
+}
+.prod-name {
+  margin:8px 0 4px; color:#4b004d; font-weight:bold;
+}
+.prod-cta {
+  color:#C04E4E; font-size:0.9em;
+}
+
+.cta-btn {
+  display: block;
+  margin: 24px auto;
+  max-width: 320px;
+  padding: 16px;
+  font-weight: 600;
+  background:#C04E4E;
+  color:#fff;
+  border:none; border-radius:4px;
+  font-size:1.1em;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+@media(min-width:600px){
+  .products-preview { grid-template-columns:repeat(3,1fr); }
+}
+
+  </style>
 </head>
 <body>
   <header class="site-header">
     <img src="logo.png" alt="OddFit Logo" class="logo" />
     <button class="menu-toggle">☰</button>
-  </header>
-
-  <nav class="mobile-nav">
+  </header>  <nav class="mobile-nav">
     <a href="#">Home</a>
     <a href="#">About</a>
     <a href="#">Sizing</a>
     <a href="#">Products</a>
     <a href="#">FAQ</a>
     <a href="#">Contact</a>
-  </nav>
-
-  <main>
+  </nav>  <main>
     <div class="swiper-container hero-slider">
       <div class="swiper-wrapper">
-        <div class="swiper-slide"><img src="images/sample1.jpg" alt="Hero 1"></div>
-        <div class="swiper-slide"><img src="images/sample2.jpg" alt="Hero 2"></div>
-        <div class="swiper-slide"><img src="images/sample3.jpg" alt="Hero 3"></div>
+        <div class="swiper-slide"><img src="sample1.jpg" alt="Hero 1"></div>
+        <div class="swiper-slide"><img src="sample2.jpg" alt="Hero 2"></div>
+        <div class="swiper-slide"><img src="sample3.jpg" alt="Hero 3"></div>
       </div>
       <div class="swiper-pagination"></div>
-    </div>
+    </div><section class="products-preview">
+  <h2>For The First Drop</h2>
+  <div class="product-card">
+    <img src="sample1.jpg" alt="Product 1">
+    <p class="prod-name">Peplum Top</p>
+    <p class="prod-cta">DM to order</p>
+  </div>
+  <div class="product-card">
+    <img src="sample2.jpg" alt="Product 2">
+    <p class="prod-name">Trousers</p>
+    <p class="prod-cta">DM to order</p>
+  </div>
+  <div class="product-card">
+    <img src="sample3.jpg" alt="Product 3">
+    <p class="prod-name">Kurti</p>
+    <p class="prod-cta">DM to order</p>
+  </div>
+</section>
 
-    <section class="products-preview">
-      <h2>For The First Drop</h2>
-      <div class="product-card">
-        <img src="images/sample1.jpg" alt="Product 1">
-        <p class="prod-name">Peplum Top</p>
-        <p class="prod-cta">DM to order</p>
-      </div>
-      <div class="product-card">
-        <img src="images/sample2.jpg" alt="Product 2">
-        <p class="prod-name">Trousers</p>
-        <p class="prod-cta">DM to order</p>
-      </div>
-      <div class="product-card">
-        <img src="images/sample3.jpg" alt="Product 3">
-        <p class="prod-name">Kurti</p>
-        <p class="prod-cta">DM to order</p>
-      </div>
-    </section>
+<button class="cta-btn notify-btn">Notify Me</button>
 
-    <button class="cta-btn notify-btn">Notify Me</button>
-  </main>
+  </main>  <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>  <script>
+    document.querySelector('.menu-toggle').onclick = () => {
+      document.querySelector('.mobile-nav').classList.toggle('show');
+    };
 
-  <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-  <script src="js/main.js"></script>
-</body>
+    new Swiper('.hero-slider', {
+      loop:true,
+      pagination:{ el:'.swiper-pagination' }
+    });
+  </script></body>
 </html>
