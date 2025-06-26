@@ -1,49 +1,66 @@
+* { margin:0; padding:0; box-sizing:border-box; }
+body, html { font-family:'Segoe UI',sans-serif; }
 
-body {
-  font-family: 'Segoe UI', sans-serif;
-  margin: 0;
-  padding: 0;
-  background: #f3e7f3;
-  color: #4b004d;
+.site-header {
+  position: sticky; top:0; background:#fff;
+  display:flex; justify-content:space-between;
+  align-items:center; padding:10px;
+  z-index:100;
+  box-shadow:0 1px 4px rgba(0,0,0,0.1);
 }
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1em;
+.logo { height:40px; }
+.menu-toggle {
+  background:none; border:none; font-size:24px;
 }
-.logo {
-  height: 40px;
+.mobile-nav {
+  display:none; flex-direction:column;
+  background:#fff; text-align:center;
 }
-nav a {
-  margin: 0 10px;
-  text-decoration: none;
-  color: #4b004d;
+.mobile-nav a {
+  padding:12px; border-bottom:1px solid #eee;
+  text-decoration:none; color:#333;
 }
-.hero {
-  text-align: center;
-  padding: 3em 1em;
+.mobile-nav.show {
+  display:flex;
 }
-.insta-frame {
-  width: 100%;
-  height: 300px;
-  border: none;
+main { padding:16px; }
+
+.hero-slider { width:100%; height:auto; margin-bottom:20px; }
+.swiper-slide {
+  display:flex; justify-content:center; align-items:center;
+  background:#ddd; color:#444;
 }
-.popup {
-  display: none;
-  position: fixed;
-  z-index: 999;
-  left: 0; top: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.6);
-  align-items: center;
-  justify-content: center;
+.swiper-slide img {
+  width:100%; height:auto; border-radius:6px;
 }
-.popup-content {
-  background: white;
-  color: black;
-  padding: 20px;
-  border-radius: 10px;
-  max-width: 300px;
-  text-align: center;
+
+.products-preview {
+  padding:16px;
+  display:grid;
+  grid-template-columns:1fr;
+  gap:12px;
+}
+.products-preview .product-card {
+  background:#fff;
+  padding:12px;
+  text-align:center;
+  border-radius:8px;
+  box-shadow:0 2px 6px rgba(0,0,0,0.1);
+}
+.product-card img {
+  width:100%; border-radius:4px;
+}
+.prod-name { margin:8px 0 4px; color:#4b004d; font-weight:bold; }
+.prod-cta { color:#C04E4E; font-size:0.9em; }
+
+.cta-btn {
+  margin:20px 16px;
+  background:#C04E4E; color:#fff; padding:14px;
+  width:calc(100% - 32px);
+  border:none; border-radius:4px;
+  font-size:1.1em;
+}
+
+@media(min-width:600px){
+  .products-preview { grid-template-columns:repeat(3,1fr); }
 }
