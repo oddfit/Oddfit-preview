@@ -128,16 +128,16 @@ body {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  padding: 20px 12px;
+  padding: 10px 12px;
   justify-content: space-between;
 }
 
 .box {
   flex: 1 1 calc(50% - 10px);
-  padding: 20px;
+  padding: 10px;
   border-radius: 8px;
   text-align: center;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .box h3 {
