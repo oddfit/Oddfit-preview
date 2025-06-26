@@ -1,5 +1,5 @@
 
-emailjs.init("YOUR_PUBLIC_KEY");
+emailjs.init("JW4eGISQKz3Icac9U");
 
 function openPopup() {
   document.getElementById("popup").style.display = "flex";
@@ -19,7 +19,7 @@ function sendEmail() {
     return;
   }
 
-  emailjs.send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", {
+  emailjs.send("service_oddfit", "template_notifyme", {
     user_email: email
   }).then(() => {
     status.textContent = "We will contact you soon.";
