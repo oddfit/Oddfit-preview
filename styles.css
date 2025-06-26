@@ -128,7 +128,7 @@ body {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  padding: 20px 12px;
+  padding: 10px 8px;
   justify-content: space-between;
   align-items: stretch; /* Ensure all boxes are same height */
 }
