@@ -16,15 +16,18 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <!-- Navigation Header -->
   <header class="navbar">
     <div class="nav-left">
       <i class="fas fa-bars menu-icon" onclick="toggleDrawer()"></i>
     </div>
+
     <div class="nav-center">
       <div class="logo">
-  <img src="logo_mini.png" alt="OddFit Logo" />
-</div>
+        <img src="logo_mini.png" alt="OddFit Logo" />
+      </div>
     </div>
+
     <div class="nav-right">
       <i class="fas fa-search"></i>
       <i class="fas fa-heart"></i>
@@ -32,6 +35,7 @@
     </div>
   </header>
 
+  <!-- Drawer Menu -->
   <aside id="drawer" class="drawer">
     <ul>
       <li><a href="#">Shop Women</a></li>
@@ -43,6 +47,7 @@
     </ul>
   </aside>
 
+  <!-- Hero Section -->
   <main>
     <section class="hero">
       <img src="banner.png" alt="OddFit Hero Banner" />
@@ -52,5 +57,13 @@
       </div>
     </section>
   </main>
+
+  <!-- Drawer Toggle Script -->
+  <script>
+    function toggleDrawer() {
+      const drawer = document.getElementById("drawer");
+      drawer.classList.toggle("open");
+    }
+  </script>
 </body>
 </html>
