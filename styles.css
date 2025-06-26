@@ -1,15 +1,7 @@
-/* Reset */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-/* Body */
+/* Reset & Base */
 body {
+  margin: 0;
   font-family: 'Segoe UI', sans-serif;
-  background-color: #fff;
-  color: #333;
 }
 
 /* Navbar */
@@ -17,78 +9,86 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 14px 20px;
-  background-color: #fff;
+  padding: 12px 16px;
+  background-color: white;
   border-bottom: 1px solid #eee;
-  position: sticky;
-  top: 0;
-  z-index: 999;
+}
+
+.nav-left,
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.nav-center {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
 }
 
 .logo img {
-  height: 38px;
-  width: auto;
+  height: 32px;
 }
 
-.menu-icons i {
-  font-size: 1.3rem;
-  margin-left: 16px;
-  cursor: pointer;
+/* Drawer */
+.drawer {
+  position: fixed;
+  top: 0;
+  left: -250px;
+  width: 220px;
+  height: 100%;
+  background: #fff;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  transition: left 0.3s ease;
+  padding: 20px;
+  z-index: 1000;
+}
+
+.drawer.open {
+  left: 0;
+}
+
+.drawer ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.drawer ul li {
+  margin: 16px 0;
+}
+
+.drawer ul li a {
+  text-decoration: none;
   color: #333;
+  font-size: 16px;
 }
 
-/* Hero */
+/* Hero Section */
 .hero {
   position: relative;
-  width: 100%;
 }
 
 .hero img {
   width: 100%;
-  height: auto;
   display: block;
 }
 
-/* CTA Buttons */
 .cta-buttons {
   position: absolute;
   bottom: 30px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  flex-direction: column;
   gap: 12px;
 }
 
 .cta-buttons button {
-  padding: 12px 24px;
-  background-color: #fff;
-  color: #000;
-  border: none;
+  padding: 12px 20px;
+  font-size: 14px;
   font-weight: bold;
-  font-size: 1rem;
+  background: white;
+  border: none;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  transition: background-color 0.3s ease;
-}
-
-.cta-buttons button:hover {
-  background-color: #f0f0f0;
-}
-
-/* Responsive */
-@media (max-width: 600px) {
-  .logo {
-    font-size: 1.3rem;
-  }
-
-  .menu-icons i {
-    font-size: 1.1rem;
-    margin-left: 12px;
-  }
-
-  .cta-buttons button {
-    font-size: 0.9rem;
-    padding: 10px 20px;
-  }
 }
