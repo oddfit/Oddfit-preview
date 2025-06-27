@@ -208,8 +208,8 @@ body {
 
   .info-boxes {
     flex-direction: row;
-    gap: 16px;
-    padding: 20px;
+    /*gap: 16px;
+    padding: 20px;*/
   }
 
   .box-button {
