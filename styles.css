@@ -85,14 +85,8 @@ body {
 /* Hero Section */
 .hero {
   position: relative;
-  height: 80vh; /* Default for desktop */
+  height: 80vh;
   overflow: hidden;
-}
-
-@media (max-width: 768px) {
-  .hero {
-    height: 60vh; /* Smaller height on mobile */
-  }
 }
 
 .hero img {
@@ -139,7 +133,7 @@ body {
   gap: 10px;
   padding: 10px 8px;
   justify-content: space-between;
-  align-items: stretch; /* Ensure all boxes are same height */
+  align-items: stretch;
 }
 
 .box {
@@ -150,21 +144,7 @@ body {
   font-size: 12px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* Distribute content */
-}
-
-.box-button {
-  align-self: center; /* Center horizontally */
-  margin-top: auto;   /* Push to bottom */
-  background: white;
-  border: none;
-  padding: 10px 14px;
-  font-weight: bold;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 0.9em;
-  color: #000;
-  text-align: center;
+  justify-content: space-between;
 }
 
 .box h3 {
@@ -180,6 +160,20 @@ body {
   line-height: 1.4;
 }
 
+.box-button {
+  align-self: center;
+  margin-top: auto;
+  background: white;
+  border: none;
+  padding: 10px 14px;
+  font-weight: bold;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9em;
+  color: #000;
+  text-align: center;
+}
+
 .box.pink {
   background-color: #ffe5ec;
 }
@@ -193,4 +187,54 @@ body {
   background-color: #f0f0f0;
   transform: scale(1.02);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .hero {
+    height: 60vh;
+  }
+
+  .cta-buttons {
+    bottom: 16px;
+    max-width: 90%;
+    gap: 8px;
+  }
+
+  .cta-button {
+    padding: 14px;
+    font-size: 13px;
+  }
+
+  .info-boxes {
+    flex-direction: column;
+    gap: 16px;
+    padding: 20px;
+  }
+
+  .box-button {
+    width: 100%;
+  }
+
+  .navbar {
+    padding: 10px 12px;
+  }
+
+  .logo img {
+    height: 28px;
+  }
+
+  .nav-left,
+  .nav-right {
+    gap: 12px;
+  }
+
+  .drawer {
+    width: 200px;
+    padding: 16px;
+  }
+
+  .drawer ul li {
+    margin: 12px 0;
+  }
 }
