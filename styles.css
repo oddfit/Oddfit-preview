@@ -207,7 +207,7 @@ body {
   }
 
   .info-boxes {
-    flex-direction: column;
+    flex-direction: row;
     gap: 16px;
     padding: 20px;
   }
