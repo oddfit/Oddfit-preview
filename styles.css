@@ -261,7 +261,7 @@ body {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 12px;
-    padding: 0 16px;
+    padding: 0 20px;
   }
 
   .category-card {
