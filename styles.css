@@ -283,3 +283,28 @@ body {
     height: auto;
   }
 }
+
+.footer {
+  background-color: #f9f9f9;
+  padding: 20px 16px;
+  text-align: center;
+  font-size: 14px;
+  color: #555;
+  margin-top: 40px;
+  border-top: 1px solid #eee;
+}
+
+.footer-social {
+  margin-bottom: 10px;
+}
+
+.footer-social a {
+  margin: 0 10px;
+  color: #333;
+  font-size: 20px;
+  transition: color 0.3s ease;
+}
+
+.footer-social a:hover {
+  color: #8e3b80; /* OddFit main color */
+}
