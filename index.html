@@ -25,7 +25,8 @@
   <i class="fas fa-shopping-bag"></i>
 </div>
 
-  </header>  <!-- Drawer Menu -->  <aside id="drawer" class="drawer">
+  </header>  <!-- Drawer Menu -->  
+  <aside id="drawer" class="drawer">
     <div class="drawer-header">
       <i class="fas fa-times close-icon" onclick="toggleDrawer()"></i>
     </div>
@@ -37,14 +38,16 @@
       <li><a href="#">Contact</a></li>
       <li><a href="#">Login</a></li>
     </ul>
-  </aside>  <!-- Hero Section -->  <main>
+  </aside>  <!-- Hero Section -->  
+  <main>
     <section class="hero">
       <img src="banner.png" alt="OddFit Hero Banner" />
       <div class="cta-buttons">
         <button class="cta-button shop-women" onclick="scrollToSection('category-carousel')">SHOP WOMENS</button>
         <button class="cta-button" onclick="location.href='#'">SHOP MENS</button>
       </div>
-    </section><section class="info-boxes">
+    </section>
+  <section class="info-boxes">
   <div class="box pink">
     <h3>Find Your Fit+</h3>
     <p>In-between sizes? We’ve got you covered.</p>
@@ -55,7 +58,7 @@
     <p>No filters. No fuss.<br>Just fashion that fits.</p>
     <button class="box-button">See Our Fit Philosophy</button>
   </div>
-</section>
+ </section>
 
 <!-- Category Carousel -->
 <section class="category-carousel" id="category-carousel">
@@ -82,7 +85,9 @@
 </section>
 <section id="product-list" class="product-grid"></section>
 <!-- <section id="women">...</section> -->
-  </main>  <!-- Drawer Toggle Script -->  <script>
+  </main>  
+  <!-- Drawer Toggle Script -->  
+  <script>
     function toggleDrawer() {
       const drawer = document.getElementById("drawer");
       drawer.classList.toggle("open");
@@ -91,10 +96,7 @@
       const el = document.getElementById(id);
       if (el) el.scrollIntoView({ behavior: 'smooth' });
     }
-    
-  <script>
   const sheetURL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQl-Wz3PrELBXNohvmU8-HJ1FEedmQJou9nvrPlrO5ix4VcKyE3-S5AmEZI-oCM1RRspIa2Jjcz8S9n/pub?gid=0&single=true&output=csv';
-
   async function loadProducts() {
     const res = await fetch(sheetURL);
     const csvText = await res.text();
@@ -118,7 +120,6 @@
   }
 
   loadProducts();
-</script>
   </script></body>
   <footer class="footer">
   <div class="footer-content">
