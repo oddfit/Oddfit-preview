@@ -208,6 +208,16 @@ body {
   margin: 0 auto;
 }
 
+/* Pink box button on press */
+.box.pink .box-button:active {
+  background-color: #ffb6c1; /* Light/dark pink when pressed */
+}
+
+/* Shop Women's CTA button on press */
+.cta-button.shop-women:active {
+  background-color: #ffb6c1;
+}
+
 /* Responsive Styles */
 @media (max-width: 768px) {
   .hero {
