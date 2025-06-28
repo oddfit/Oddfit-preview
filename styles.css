@@ -189,6 +189,25 @@ body {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
+/* Desktop/default styles (already outside media query) */
+.category-track {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 20px;
+  overflow: visible;
+}
+
+.category-card {
+  width: auto;
+}
+
+.category-card img {
+  width: 100%;
+  height: auto;
+  max-width: 140px;
+  margin: 0 auto;
+}
+
 /* Responsive Styles */
 @media (max-width: 768px) {
   .hero {
@@ -237,45 +256,23 @@ body {
   .drawer ul li {
     margin: 12px 0;
   }
-}
-/* Category Carousel */
-.category-carousel {
-  padding: 20px;
-}
+  
+  .category-track {
+    display: flex;
+    overflow-x: auto;
+    gap: 12px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
 
-.category-carousel h2 {
-  margin-bottom: 10px;
-  font-size: 18px;
-  font-weight: bold;
-  text-align: center;
-}
+  .category-card {
+    flex: 0 0 auto;
+    width: 100px;
+    scroll-snap-align: start;
+  }
 
-.category-track {
-  display: flex;
-  overflow-x: auto;
-  gap: 12px;
-  padding-bottom: 10px;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-}
-
-.category-card {
-  flex: 0 0 auto;
-  width: 100px;
-  scroll-snap-align: start;
-  text-align: center;
-}
-
-.category-card img {
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
-  border-radius: 6px;
-  border: 1px solid #ddd;
-}
-
-.category-card p {
-  margin-top: 6px;
-  font-size: 13px;
-  color: #333;
+  .category-card img {
+    width: 100px;
+    height: 100px;
+  }
 }
