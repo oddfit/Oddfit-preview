@@ -79,6 +79,7 @@
     <!-- Add more as needed -->
   </div>
 </section>
+<section id="product-list" class="product-grid"></section>
 <!-- <section id="women">...</section> -->
   </main>  <!-- Drawer Toggle Script -->  <script>
     function toggleDrawer() {
@@ -89,6 +90,33 @@
       const el = document.getElementById(id);
       if (el) el.scrollIntoView({ behavior: 'smooth' });
     }
+    
+  const sheetURL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQl-Wz3PrELBXNohvmU8-HJ1FEedmQJou9nvrPlrO5ix4VcKyE3-S5AmEZI-oCM1RRspIa2Jjcz8S9n/pub?gid=0&single=true&output=csv';
+  async function loadProducts() {
+    const res = await fetch(sheetURL);
+    const text = await res.text();
+    const rows = text.split('\n').map(row => row.split(','));
+
+    const headers = rows[0];
+    const products = rows.slice(1).map(row => {
+      return headers.reduce((obj, key, i) => {
+        obj[key.trim()] = row[i]?.trim();
+        return obj;
+      }, {});
+    });
+
+    const container = document.getElementById('product-list');
+    container.innerHTML = products.map(p => `
+      <div class="product-card">
+        <img src="${p.image_url}" alt="${p.product_name}" />
+        <h3>${p.product_name}</h3>
+        <p>${p.category} | ${p.color}</p>
+        <p>₹${p.price}</p>
+      </div>
+    `).join('');
+  }
+
+  loadProducts();
   </script></body>
   <footer class="footer">
   <div class="footer-content">
