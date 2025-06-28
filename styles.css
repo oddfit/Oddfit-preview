@@ -256,23 +256,20 @@ body {
   .drawer ul li {
     margin: 12px 0;
   }
-  
+
   .category-track {
-    display: flex;
-    overflow-x: auto;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     gap: 12px;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
+    padding: 0 16px;
   }
 
   .category-card {
-    flex: 0 0 auto;
-    width: 100px;
-    scroll-snap-align: start;
+    width: 100%;
   }
 
   .category-card img {
-    width: 100px;
-    height: 100px;
+    width: 100%;
+    height: auto;
   }
 }
