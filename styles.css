@@ -298,16 +298,23 @@ body {
   align-items: center;
   gap: 12px;
 }
-
 .footer-social {
   display: flex;
-  gap: 20px;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  margin: 20px 0;
 }
 
 .footer-icon {
   width: 28px;
   height: 28px;
   object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.footer-icon:hover {
+  transform: scale(1.1);
 }
 
 .footer-text {
