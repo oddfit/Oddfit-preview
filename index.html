@@ -114,7 +114,7 @@
     const container = document.getElementById('product-list');
     container.innerHTML = products.map(p => `
       <div class="product-card">
-        <img src="${p.image_url.trim()}" alt="${p.product_name}" />
+      <img src="https://via.placeholder.com/150" alt="${p.product_name}" />
         <h3>${p.product_name}</h3>
         <p>${p.category} | ${p.color} | ${p.size}</p>
         <p><strong>₹${p.price}</strong></p>
