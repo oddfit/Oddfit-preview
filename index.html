@@ -114,7 +114,7 @@
     const container = document.getElementById('product-list');
     container.innerHTML = products.map(p => `
       <div class="product-card">
-      <img src="https://drive.google.com/uc?export=view&id=1NE8wAt7nslb6sjQwFjRdqpPxRVBa3SfB" alt="Test Image">
+      <img src="${p.image_url.trim()}" alt="${p.product_name}" />
         <h3>${p.product_name}</h3>
         <p>${p.category} | ${p.color} | ${p.size}</p>
         <p><strong>₹${p.price}</strong></p>
