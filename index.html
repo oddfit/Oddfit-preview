@@ -65,8 +65,7 @@
   <div class="category-track" id="category-track"></div>
 </section>
 
-<section id="product-list" class="product-grid"></section>
-
+<section id="product-list" class="product-grid hidden"></section>
   </main>  <!-- Footer -->  <footer class="footer">
     <div class="footer-content">
       <div class="footer-social">
@@ -109,6 +108,7 @@
 
     function renderProducts(products) {
       const container = document.getElementById('product-list');
+      container.classList.remove("hidden");
       container.innerHTML = products.map(p => `
         <div class="product-card">
           <img src="${p.image_url}" alt="${p.product_name}" />
