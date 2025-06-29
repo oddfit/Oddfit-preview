@@ -2,10 +2,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>OddFit — Rewriting the Size Guide</title>  <meta name="description" content="OddFit brings Indo-western fashion with inclusive sizes like S+, M+, L+, XL+. Shop stylish comfort wear for all body types." />
+  <title>OddFit — Rewriting the Size Guide</title>
+  <meta name="description" content="OddFit brings Indo-western fashion with inclusive sizes like S+, M+, L+, XL+. Shop stylish comfort wear for all body types." />
   <meta name="keywords" content="OddFit, Indo-western, fashion, inclusive sizing, S+, M+, L+, XL+, comfort wear, ethnic wear" />
-  <meta name="author" content="OddFit Team" />  <!-- Font Awesome CDN -->  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />  <!-- Styles -->  <link rel="stylesheet" href="styles.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <meta name="author" content="OddFit Team" />  <!-- Font Awesome CDN -->  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="styles.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 </head>
 <body>
@@ -13,20 +14,20 @@
   <header class="navbar">
     <div class="nav-left">
       <i class="fas fa-bars menu-icon" onclick="toggleDrawer()"></i>
-    </div><div class="nav-center">
-  <div class="logo">
-    <img src="logo_mini.png" alt="OddFit Logo" />
-  </div>
-</div>
-
-<div class="nav-right">
-  <i class="fas fa-search"></i>
-  <i class="fas fa-heart"></i>
-  <i class="fas fa-shopping-bag"></i>
-</div>
-
-  </header>  <!-- Drawer Menu -->  
-  <aside id="drawer" class="drawer">
+    </div>
+    <div class="nav-center">
+      <div class="logo">
+        <img src="logo_mini.png" alt="OddFit Logo" />
+      </div>
+    </div>
+    <div class="nav-right">
+      <i class="fas fa-search" onclick="toggleSearchBar()"></i>
+      <i class="fas fa-heart"></i>
+      <i class="fas fa-shopping-bag"></i>
+    </div>
+  </header>  <!-- Search Bar -->  <div class="search-bar" id="search-bar" style="display: none;">
+    <input type="text" id="searchBox" placeholder="Search..." oninput="handleSearch()" />
+  </div>  <!-- Drawer Menu -->  <aside id="drawer" class="drawer">
     <div class="drawer-header">
       <i class="fas fa-times close-icon" onclick="toggleDrawer()"></i>
     </div>
@@ -38,16 +39,14 @@
       <li><a href="#">Contact</a></li>
       <li><a href="#">Login</a></li>
     </ul>
-  </aside>  <!-- Hero Section -->  
-  <main>
+  </aside>  <!-- Hero Section -->  <main>
     <section class="hero">
       <img src="banner.png" alt="OddFit Hero Banner" />
       <div class="cta-buttons">
         <button class="cta-button shop-women" onclick="scrollToSection('category-carousel')">SHOP WOMENS</button>
         <button class="cta-button" onclick="location.href='#'">SHOP MENS</button>
       </div>
-    </section>
-  <section class="info-boxes">
+    </section><section class="info-boxes">
   <div class="box pink">
     <h3>Find Your Fit+</h3>
     <p>In-between sizes? We’ve got you covered.</p>
@@ -58,84 +57,93 @@
     <p>No filters. No fuss.<br>Just fashion that fits.</p>
     <button class="box-button">See Our Fit Philosophy</button>
   </div>
- </section>
+</section>
 
 <!-- Category Carousel -->
 <section class="category-carousel" id="category-carousel">
   <h2>Shop by Category</h2>
-  <div class="category-track">
-    <div class="category-card">
-      <img src="tops.png" alt="Tops" />
-      <p>Tops</p>
-    </div>
-    <div class="category-card">
-      <img src="kurti.png" alt="Kurtis" />
-      <p>Kurtis</p>
-    </div>
-    <div class="category-card">
-      <img src="co-ord.png" alt="Co-ords" />
-      <p>Co-ords</p>
-    </div>
-    <div class="category-card">
-      <img src="bottoms.png" alt="Bottoms" />
-      <p>Bottoms</p>
-    </div>
-    <!-- Add more as needed -->
-  </div>
+  <div class="category-track" id="category-track"></div>
 </section>
+
 <section id="product-list" class="product-grid"></section>
-<!-- <section id="women">...</section> -->
-  </main>  
-  <!-- Drawer Toggle Script -->  
-  <script>
+
+  </main>  <!-- Footer -->  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-social">
+        <a href="https://instagram.com/oddfit.in" target="_blank" aria-label="Instagram">
+          <img src="instagram.png" alt="Instagram" class="footer-icon" />
+        </a>
+        <a href="https://wa.me/917259116896" target="_blank" aria-label="WhatsApp">
+          <img src="whatsapp.png" alt="WhatsApp" class="footer-icon" />
+        </a>
+      </div>
+      <p class="footer-text">© 2025 OddFit. All rights reserved.</p>
+    </div>
+  </footer>  <!-- Scripts -->  <script>
     function toggleDrawer() {
       const drawer = document.getElementById("drawer");
       drawer.classList.toggle("open");
     }
+
     function scrollToSection(id) {
       const el = document.getElementById(id);
       if (el) el.scrollIntoView({ behavior: 'smooth' });
     }
 
-    window.addEventListener('DOMContentLoaded', () => {
-  // your code
-  const sheetURL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQl-Wz3PrELBXNohvmU8-HJ1FEedmQJou9nvrPlrO5ix4VcKyE3-S5AmEZI-oCM1RRspIa2Jjcz8S9n/pub?gid=0&single=true&output=csv';
-  async function loadProducts() {
-    const res = await fetch(sheetURL);
-    const csvText = await res.text();
+    function toggleSearchBar() {
+      const bar = document.getElementById("search-bar");
+      bar.style.display = bar.style.display === "none" ? "block" : "none";
+    }
 
-    const parsed = Papa.parse(csvText, {
-      header: true,
-      skipEmptyLines: true
-    });
+    let allProducts = [];
 
-    const products = parsed.data;
+    async function loadProducts() {
+      const sheetURL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQl-Wz3PrELBXNohvmU8-HJ1FEedmQJou9nvrPlrO5ix4VcKyE3-S5AmEZI-oCM1RRspIa2Jjcz8S9n/pub?gid=0&single=true&output=csv';
+      const res = await fetch(sheetURL);
+      const csvText = await res.text();
+      const parsed = Papa.parse(csvText, { header: true, skipEmptyLines: true });
+      allProducts = parsed.data;
+      renderProducts(allProducts);
+      renderCategories([...new Set(allProducts.map(p => p.category))]);
+    }
 
-    const container = document.getElementById('product-list');
-    container.innerHTML = products.map(p => `
-      <div class="product-card">
-      <img src="${p.image_url.trim()}" alt="${p.product_name}" />
-        <h3>${p.product_name}</h3>
-        <p>${p.category} | ${p.color} | ${p.size}</p>
-        <p><strong>₹${p.price}</strong></p>
-      </div>
-    `).join('');
-  }
+    function renderProducts(products) {
+      const container = document.getElementById('product-list');
+      container.innerHTML = products.map(p => `
+        <div class="product-card">
+          <img src="${p.image_url}" alt="${p.product_name}" />
+          <h3>${p.product_name}</h3>
+          <p>${p.category} | ${p.color} | ${p.size}</p>
+          <p><strong>₹${p.price}</strong></p>
+        </div>
+      `).join('');
+    }
 
-  loadProducts();
-  });
+    function handleSearch() {
+      const searchTerm = document.getElementById('searchBox').value.toLowerCase();
+      const filtered = allProducts.filter(p =>
+        p.product_name.toLowerCase().includes(searchTerm) ||
+        p.category.toLowerCase().includes(searchTerm) ||
+        p.color.toLowerCase().includes(searchTerm)
+      );
+      renderProducts(filtered);
+    }
+
+    function renderCategories(categories) {
+      const track = document.getElementById('category-track');
+      track.innerHTML = categories.map(cat => `
+        <div class="category-card" onclick="filterByCategory('${cat}')">
+          <img src="${cat.toLowerCase()}.png" alt="${cat}" />
+          <p>${cat}</p>
+        </div>
+      `).join('');
+    }
+
+    function filterByCategory(cat) {
+      const filtered = allProducts.filter(p => p.category.toLowerCase() === cat.toLowerCase());
+      renderProducts(filtered);
+    }
+
+    window.addEventListener('DOMContentLoaded', loadProducts);
   </script></body>
-  <footer class="footer">
-  <div class="footer-content">
-    <div class="footer-social">
-      <a href="https://instagram.com/oddfit.in" target="_blank" aria-label="Instagram">
-        <img src="instagram.png" alt="Instagram" class="footer-icon" />
-      </a>
-      <a href="https://wa.me/917259116896" target="_blank" aria-label="WhatsApp">
-        <img src="whatsapp.png" alt="WhatsApp" class="footer-icon" />
-      </a>
-    </div>
-    <p class="footer-text">© 2025 OddFit. All rights reserved.</p>
-  </div>
-</footer>
 </html>
