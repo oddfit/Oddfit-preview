@@ -172,7 +172,7 @@ function toggleSearchBar() {
     }
 
     function handleSearch() {
-      const searchTerm = document.getElementById('searchBox').value.toLowerCase();
+      const searchTerm = document.getElementById('search-input').value.toLowerCase();
       const filtered = allProducts.filter(p =>
         p.product_name.toLowerCase().includes(searchTerm) ||
         p.category.toLowerCase().includes(searchTerm) ||
