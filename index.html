@@ -97,18 +97,51 @@
       if (el) el.scrollIntoView({ behavior: 'smooth' });
     }
 
-    function toggleSearchBar() {
-      const bar = document.getElementById("search-bar");
-      const logo = document.getElementById("logo");
+function toggleSearchBar() {
+  const searchBar = document.getElementById("search-bar");
+  const logo = document.getElementById("logo");
 
-      if (searchBar.style.display === "none") {
-        searchBar.style.display = "block";
-        logo.style.marginRight = "20px";
-      } else {
-        searchBar.style.display = "none";
-        logo.style.marginRight = "auto";
-      }
+  const isHidden = searchBar.style.display === "none" || searchBar.style.display === "";
+
+  if (isHidden) {
+    searchBar.style.display = "block";
+    logo.style.marginRight = "20px";
+    renderProducts(allProducts);
+    scrollToSection("product-list");
+    document.getElementById("searchBox").focus();
+
+    // ✅ Add close on outside click
+    document.addEventListener("click", handleOutsideClick);
+    document.addEventListener("keydown", handleEscapeKey);
+  } else {
+    closeSearchBar();
+  }
+
+  function handleOutsideClick(e) {
+    const icon = document.querySelector(".fa-search");
+    if (
+      !searchBar.contains(e.target) &&
+      e.target !== icon &&
+      !icon.contains(e.target)
+    ) {
+      closeSearchBar();
     }
+  }
+
+  function handleEscapeKey(e) {
+    if (e.key === "Escape") {
+      closeSearchBar();
+    }
+  }
+
+  function closeSearchBar() {
+    searchBar.style.display = "none";
+    logo.style.marginRight = "auto";
+    document.removeEventListener("click", handleOutsideClick);
+    document.removeEventListener("keydown", handleEscapeKey);
+  }
+}
+
 
     let allProducts = [];
 
@@ -158,7 +191,7 @@
         </div>
       `).join('');
     }
-
+  
     function filterByCategory(cat) {
       const filtered = allProducts.filter(p => p.category.toLowerCase() === cat.toLowerCase());
       renderProducts(filtered);
