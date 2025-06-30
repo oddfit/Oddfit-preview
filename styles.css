@@ -354,3 +354,22 @@ body {
   object-fit: cover;
   border-radius: 6px;
 }
+
+.search-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-wrapper input {
+  padding-right: 36px; /* space for icon */
+  height: 36px;
+  font-size: 14px;
+}
+
+.search-confirm-icon {
+  position: absolute;
+  right: 10px;
+  color: #555;
+  cursor: pointer;
+}
