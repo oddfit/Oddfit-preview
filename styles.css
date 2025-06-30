@@ -28,9 +28,17 @@ body {
 }
 
 .nav-center {
-  flex-grow: 1;
   display: flex;
-  justify-content: center;
+  align-items: center;
+  gap: 12px;
+}
+
+.search-bar input {
+  width: 180px;
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  font-size: 14px;
 }
 
 .logo img {
