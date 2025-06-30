@@ -102,7 +102,7 @@
       const csvText = await res.text();
       const parsed = Papa.parse(csvText, { header: true, skipEmptyLines: true });
       allProducts = parsed.data;
-      renderProducts(allProducts);
+      // renderProducts(allProducts);
       renderCategories([...new Set(allProducts.map(p => p.category))]);
     }
 
