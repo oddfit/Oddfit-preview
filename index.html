@@ -109,8 +109,10 @@
     function renderProducts(products) {
       const container = document.getElementById('product-list');
       container.classList.remove("hidden");
-      container.innerHTML = products.map(p => `
-        <h2>Products</h2>
+      // Create the heading
+      let html = `<h2>Products</h2>`;
+      // Append each product card
+      html += products.map(p => `
         <div class="product-card">
           <img src="${p.image_url}" alt="${p.product_name}" />
           <h3>${p.product_name}</h3>
