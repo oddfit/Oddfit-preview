@@ -118,16 +118,20 @@ function toggleSearchBar() {
     closeSearchBar();
   }
 
-  function handleOutsideClick(e) {
-    const icon = document.querySelector(".fa-search");
-    if (
-      !searchBar.contains(e.target) &&
-      e.target !== icon &&
-      !icon.contains(e.target)
-    ) {
-      closeSearchBar();
-    }
+function handleOutsideClick(e) {
+  const searchBar = document.getElementById("search-bar");
+  const searchWrapper = document.querySelector(".search-wrapper");
+  const navSearchIcon = document.getElementById("nav-search-icon");
+
+  if (
+    !searchBar.contains(e.target) &&
+    !searchWrapper.contains(e.target) &&
+    e.target !== navSearchIcon
+  ) {
+    closeSearchBar();
   }
+}
+
 
   function handleEscapeKey(e) {
     if (e.key === "Escape") {
