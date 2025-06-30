@@ -20,12 +20,14 @@
         <img src="logo_mini.png" alt="OddFit Logo" />
       </div>
       <div class="search-bar" id="search-bar" style="display: none;">
-        <input type="text" id="search-input" placeholder="Search..." oninput="handleSearch()" />
-        <button onclick="handleSearch(true)"><i class="fas fa-search"></i></button>
+        <div class="search-wrapper">
+          <input type="text" id="search-input" placeholder="Search..." oninput="handleSearch()" />
+          <i class="fas fa-search search-confirm-icon" onclick="handleSearch()"></i>
+        </div>
       </div>
     </div>
     <div class="nav-right">
-      <i class="fas fa-search" onclick="toggleSearchBar()"></i>
+      <i class="fas fa-search" id="nav-search-icon" onclick="toggleSearchBar()"></i>
       <i class="fas fa-heart"></i>
       <i class="fas fa-shopping-bag"></i>
     </div>
