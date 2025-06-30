@@ -19,6 +19,9 @@
       <div class="logo">
         <img src="logo_mini.png" alt="OddFit Logo" />
       </div>
+      <div class="search-bar">
+        <input type="text" id="search-input" placeholder="Search..." oninput="handleSearch()" />
+      </div>
     </div>
     <div class="nav-right">
       <i class="fas fa-search" onclick="toggleSearchBar()"></i>
@@ -96,7 +99,15 @@
 
     function toggleSearchBar() {
       const bar = document.getElementById("search-bar");
-      bar.style.display = bar.style.display === "none" ? "block" : "none";
+      const logo = document.getElementById("logo");
+
+      if (searchBar.style.display === "none") {
+        searchBar.style.display = "block";
+        logo.style.marginRight = "20px";
+      } else {
+        searchBar.style.display = "none";
+        logo.style.marginRight = "auto";
+      }
     }
 
     let allProducts = [];
