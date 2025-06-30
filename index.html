@@ -49,7 +49,7 @@
       <img src="banner.png" alt="OddFit Hero Banner" />
       <div class="cta-buttons">
         <button class="cta-button shop-women" onclick="scrollToSection('category-carousel')">SHOP WOMENS</button>
-        <button class="cta-button" onclick="location.href='#'">SHOP MENS</button>
+        <button class="cta-button" onclick="showErrorPopup()">SHOP MENS</button>
       </div>
     </section><section class="info-boxes">
   <div class="box pink">
@@ -228,9 +228,27 @@ document.addEventListener("DOMContentLoaded", function () {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 });
-  </script>
+
+function closePopup() {
+  document.getElementById("errorPopup").style.display = "none";
+}
+
+function showErrorPopup() {
+  document.getElementById("errorPopup").style.display = "flex";
+}
+  
+</script>
   <button id="backToTop" title="Go to top">
   <i class="fas fa-arrow-up"></i>
   </button>
+  <!-- Popup -->
+<div id="errorPopup" class="popup-overlay">
+  <div class="popup-content">
+    <img src="tape-animal.png" alt="Error Illustration" />
+    <h2>Oops! Something went wrong.</h2>
+    <p>Looks like we tripped on a wire. Don't worry, we're fixing it!</p>
+    <button onclick="closePopup()">Go back home</button>
+  </div>
+</div>
 </body>
 </html>
