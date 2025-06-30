@@ -223,8 +223,10 @@ window.onscroll = function () {
 };
 
 // Scroll to top when clicked
-document.getElementById("backToTop").addEventListener("click", function () {
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+document.addEventListener("DOMContentLoaded", function () {
+  document.getElementById("backToTop").addEventListener("click", function () {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
 });
   </script>
   <button id="backToTop" title="Go to top">
