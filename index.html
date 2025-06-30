@@ -21,6 +21,7 @@
       </div>
       <div class="search-bar" id="search-bar" style="display: none;">
         <input type="text" id="search-input" placeholder="Search..." oninput="handleSearch()" />
+        <button onclick="handleSearch(true)"><i class="fas fa-search"></i></button>
       </div>
     </div>
     <div class="nav-right">
@@ -105,8 +106,6 @@ function toggleSearchBar() {
   if (isHidden) {
     searchBar.style.display = "block";
     logo.style.marginRight = "20px";
-    renderProducts(allProducts);
-    scrollToSection("product-list");
     document.getElementById("search-input").focus();
 
     // ✅ Add close on outside click
@@ -171,7 +170,7 @@ function toggleSearchBar() {
       container.innerHTML = html;
     }
 
-    function handleSearch() {
+    function handleSearch(shouldScroll = false) {
       const searchTerm = document.getElementById('search-input').value.toLowerCase();
       const filtered = allProducts.filter(p =>
         p.product_name.toLowerCase().includes(searchTerm) ||
@@ -179,6 +178,9 @@ function toggleSearchBar() {
         p.color.toLowerCase().includes(searchTerm)
       );
       renderProducts(filtered);
+        if (shouldScroll && filtered.length > 0) {
+          scrollToSection("product-list");
+        }
     }
 
     function renderCategories(categories) {
