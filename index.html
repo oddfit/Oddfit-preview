@@ -157,7 +157,12 @@ function toggleSearchBar() {
       const container = document.getElementById('product-list');
       container.classList.remove("hidden");
       // Create the heading
-      let html = `<h2>Products</h2>`;
+        // Derive category from first product if available
+      let heading = 'Products';
+      if (products.length > 0) {
+        heading = `${products[0].category} - Products`;
+      }
+      let html = `<h2>${heading}</h2>`;
       // Append each product card
       html += products.map(p => `
         <div class="product-card">
