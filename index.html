@@ -110,6 +110,7 @@
       const container = document.getElementById('product-list');
       container.classList.remove("hidden");
       container.innerHTML = products.map(p => `
+        <h2>Products</h2>
         <div class="product-card">
           <img src="${p.image_url}" alt="${p.product_name}" />
           <h3>${p.product_name}</h3>
