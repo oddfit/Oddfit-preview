@@ -78,7 +78,12 @@
       </div>
       <p class="footer-text">© 2025 OddFit. All rights reserved.</p>
     </div>
-  </footer>  <!-- Scripts -->  <script>
+  </footer>  
+  <!-- Scripts -->  
+  <script>
+    window.onbeforeunload = function () {
+      window.scrollTo(0, 0);
+    };
     function toggleDrawer() {
       const drawer = document.getElementById("drawer");
       drawer.classList.toggle("open");
@@ -149,5 +154,6 @@
     }
 
     window.addEventListener('DOMContentLoaded', loadProducts);
-  </script></body>
+  </script>
+</body>
 </html>
