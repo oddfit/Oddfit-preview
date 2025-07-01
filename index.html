@@ -136,8 +136,7 @@
         <div class="product-card-modern">
           <div class="product-image-wrapper">
             <img src="${p.image_url}" alt="${p.product_name}" class="product-img" />
-            <i class="fas fa-heart wishlist-icon"></i>
-          </div>
+            <i class="fas fa-heart wishlist-icon" onclick="toggleFavorite(this)"></i>          </div>
           <div class="product-info">
             <h3 class="product-name">${p.product_name}</h3>
             <p class="product-meta">${p.color} | ${p.size}</p>
@@ -242,6 +241,9 @@
         window.scrollTo(0, 0);
       };
     });
+    function toggleFavorite(icon) {
+      icon.classList.toggle("active");
+    }
   </script>
 </body>
 </html>
