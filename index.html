@@ -189,6 +189,7 @@ html += products.map(p => `
   </div>
 `).join('');
 html += '</div>';
+container.innerHTML = html;
     }
 
     function handleSearch(shouldScroll = false) {
