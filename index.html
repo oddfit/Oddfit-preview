@@ -1,16 +1,19 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>OddFit — Rewriting the Size Guide</title>
   <meta name="description" content="OddFit brings Indo-western fashion with inclusive sizes like S+, M+, L+, XL+. Shop stylish comfort wear for all body types." />
   <meta name="keywords" content="OddFit, Indo-western, fashion, inclusive sizing, S+, M+, L+, XL+, comfort wear, ethnic wear" />
-  <meta name="author" content="OddFit Team" />  <!-- Font Awesome CDN -->  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <meta name="author" content="OddFit Team" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link rel="stylesheet" href="styles.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 </head>
 <body>
-  <!-- Navigation Header -->
+
+  <!-- Navbar -->
   <header class="navbar">
     <div class="nav-left">
       <i class="fas fa-bars menu-icon" onclick="toggleDrawer()"></i>
@@ -31,123 +34,83 @@
       <i class="fas fa-heart"></i>
       <i class="fas fa-shopping-bag"></i>
     </div>
-  </header> 
-  </div>  <!-- Drawer Menu -->  <aside id="drawer" class="drawer">
+  </header>
+
+  <!-- Drawer Menu -->
+  <aside id="drawer" class="drawer">
     <div class="drawer-header">
       <i class="fas fa-times close-icon" onclick="toggleDrawer()"></i>
     </div>
     <ul>
       <li><a href="#" onclick="scrollToSection('category-carousel'); toggleDrawer();">Shop Women</a></li>
-      <li><a href="#">Shop Men</a></li>
+      <li><a href="#" onclick="showErrorPopup(); toggleDrawer();">Shop Men</a></li>
       <li><a href="#">New Arrivals</a></li>
       <li><a href="#">Sale</a></li>
       <li><a href="#">Contact</a></li>
       <li><a href="#">Login</a></li>
     </ul>
-  </aside>  <!-- Hero Section -->  <main>
+  </aside>
+
+  <!-- Hero Section -->
+  <main>
     <section class="hero">
       <img src="banner.png" alt="OddFit Hero Banner" />
       <div class="cta-buttons">
         <button class="cta-button shop-women" onclick="scrollToSection('category-carousel')">SHOP WOMENS</button>
         <button class="cta-button" onclick="showErrorPopup()">SHOP MENS</button>
       </div>
-    </section><section class="info-boxes">
-  <div class="box pink">
-    <h3>Find Your Fit+</h3>
-    <p>In-between sizes? We’ve got you covered.</p>
-    <button class="box-button">Explore Sizes</button>
-  </div>
-  <div class="box blue">
-    <h3>Made for Real Bodies</h3>
-    <p>No filters. No fuss.<br>Just fashion that fits.</p>
-    <button class="box-button">See Our Fit Philosophy</button>
-  </div>
-</section>
+    </section>
 
-<!-- Category Carousel -->
-<section class="category-carousel" id="category-carousel">
-  <h2>Shop by Category</h2>
-  <div class="category-track" id="category-track"></div>
-</section>
+    <!-- Info Boxes -->
+    <section class="info-boxes">
+      <div class="box pink">
+        <h3>Find Your Fit+</h3>
+        <p>In-between sizes? We’ve got you covered.</p>
+        <button class="box-button">Explore Sizes</button>
+      </div>
+      <div class="box blue">
+        <h3>Made for Real Bodies</h3>
+        <p>No filters. No fuss.<br>Just fashion that fits.</p>
+        <button class="box-button">See Our Fit Philosophy</button>
+      </div>
+    </section>
 
-<section id="product-list" class="product-grid hidden"></section>
-  </main>  <!-- Footer -->  <footer class="footer">
+    <!-- Category Carousel -->
+    <section class="category-carousel" id="category-carousel">
+      <h2>Shop by Category</h2>
+      <div class="category-track" id="category-track"></div>
+    </section>
+
+    <!-- Product Grid -->
+    <section id="product-list" class="product-grid hidden"></section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
     <div class="footer-content">
       <div class="footer-social">
-        <a href="https://instagram.com/oddfit.in" target="_blank" aria-label="Instagram">
-          <img src="instagram.png" alt="Instagram" class="footer-icon" />
-        </a>
-        <a href="https://wa.me/917259116896" target="_blank" aria-label="WhatsApp">
-          <img src="whatsapp.png" alt="WhatsApp" class="footer-icon" />
-        </a>
+        <a href="https://instagram.com/oddfit.in" target="_blank"><img src="instagram.png" alt="Instagram" class="footer-icon" /></a>
+        <a href="https://wa.me/917259116896" target="_blank"><img src="whatsapp.png" alt="WhatsApp" class="footer-icon" /></a>
       </div>
       <p class="footer-text">© 2025 OddFit. All rights reserved.</p>
     </div>
-  </footer>  
-  <!-- Scripts -->  
+  </footer>
+
+  <!-- Back to Top Button -->
+  <button id="backToTop" title="Go to top"><i class="fas fa-arrow-up"></i></button>
+
+  <!-- Popup -->
+  <div id="errorPopup" class="popup-overlay" style="display: none;">
+    <div class="popup-content">
+      <img src="tape-animal.png" alt="Error Illustration" />
+      <h2>Oops! We lost the fit.</h2>
+      <p>But hey, we're all about making things fit. We'll fix it soon!</p>
+      <button onclick="closePopup()">Go back home</button>
+    </div>
+  </div>
+
+  <!-- Scripts -->
   <script>
-    window.onbeforeunload = function () {
-      window.scrollTo(0, 0);
-    };
-    function toggleDrawer() {
-      const drawer = document.getElementById("drawer");
-      drawer.classList.toggle("open");
-    }
-
-    function scrollToSection(id) {
-      const el = document.getElementById(id);
-      if (el) el.scrollIntoView({ behavior: 'smooth' });
-    }
-
-function toggleSearchBar() {
-  const searchBar = document.getElementById("search-bar");
-  const logo = document.getElementById("logo");
-
-  const isHidden = searchBar.style.display === "none" || searchBar.style.display === "";
-  console.log(isHidden);
-
-  if (isHidden) {
-    searchBar.style.display = "block";
-    logo.style.marginRight = "20px";
-    document.getElementById("search-input").focus();
-
-    // ✅ Add close on outside click
-    document.addEventListener("click", handleOutsideClick);
-    document.addEventListener("keydown", handleEscapeKey);
-  } else {
-    closeSearchBar();
-  }
-
-function handleOutsideClick(e) {
-  const searchBar = document.getElementById("search-bar");
-  const searchWrapper = document.querySelector(".search-wrapper");
-  const navSearchIcon = document.getElementById("nav-search-icon");
-
-  if (
-    !searchBar.contains(e.target) &&
-    !searchWrapper.contains(e.target) &&
-    e.target !== navSearchIcon
-  ) {
-    closeSearchBar();
-  }
-}
-
-
-  function handleEscapeKey(e) {
-    if (e.key === "Escape") {
-      closeSearchBar();
-    }
-  }
-
-  function closeSearchBar() {
-    searchBar.style.display = "none";
-    logo.style.marginRight = "auto";
-    document.removeEventListener("click", handleOutsideClick);
-    document.removeEventListener("keydown", handleEscapeKey);
-  }
-}
-
-
     let allProducts = [];
 
     async function loadProducts() {
@@ -156,53 +119,7 @@ function handleOutsideClick(e) {
       const csvText = await res.text();
       const parsed = Papa.parse(csvText, { header: true, skipEmptyLines: true });
       allProducts = parsed.data;
-      // renderProducts(allProducts);
       renderCategories([...new Set(allProducts.map(p => p.category))]);
-    }
-
-    function renderProducts(products) {
-      const container = document.getElementById('product-list');
-      container.classList.remove("hidden");
-      // Create the heading
-        // Derive category from first product if available
-      let heading = 'Products';
-      if (products.length > 0) {
-        heading = `${products[0].category} - Products`;
-      }
-      let html = `<h2>${heading}</h2>`;
-html += '<div class="product-grid-container">';
-html += products.map(p => `
-  <div class="product-card-modern">
-    <div class="product-image-wrapper">
-      <img src="${p.image_url}" alt="${p.product_name}" class="product-img" />
-      <i class="fas fa-heart wishlist-icon"></i>
-    </div>
-    <div class="product-info">
-      <h3 class="product-name">${p.product_name}</h3>
-      <p class="product-meta">${p.color} | ${p.size}</p>
-      <p class="product-category">${p.category}</p>
-      <div class="product-bottom">
-        <span class="product-price">₹${p.price}</span>
-        <button class="add-to-bag">Add to Bag</button>
-      </div>
-    </div>
-  </div>
-`).join('');
-html += '</div>';
-container.innerHTML = html;
-    }
-
-    function handleSearch(shouldScroll = false) {
-      const searchTerm = document.getElementById('search-input').value.toLowerCase();
-      const filtered = allProducts.filter(p =>
-        p.product_name.toLowerCase().includes(searchTerm) ||
-        p.category.toLowerCase().includes(searchTerm) ||
-        p.color.toLowerCase().includes(searchTerm)
-      );
-      renderProducts(filtered);
-        if (shouldScroll && filtered.length > 0) {
-          scrollToSection("product-list");
-        }
     }
 
     function renderCategories(categories) {
@@ -214,51 +131,122 @@ container.innerHTML = html;
         </div>
       `).join('');
     }
-  
+
     function filterByCategory(cat) {
       const filtered = allProducts.filter(p => p.category.toLowerCase() === cat.toLowerCase());
       renderProducts(filtered);
     }
 
+    function renderProducts(products) {
+      const container = document.getElementById('product-list');
+      container.classList.remove("hidden");
+      let heading = products.length > 0 ? `${products[0].category} - Products` : 'Products';
+      let html = `<h2>${heading}</h2><div class="product-grid-container">`;
+      html += products.map(p => `
+        <div class="product-card-modern">
+          <div class="product-image-wrapper">
+            <img src="${p.image_url}" alt="${p.product_name}" class="product-img" />
+            <i class="fas fa-heart wishlist-icon"></i>
+          </div>
+          <div class="product-info">
+            <h3 class="product-name">${p.product_name}</h3>
+            <p class="product-meta">${p.color} | ${p.size}</p>
+            <p class="product-category">${p.category}</p>
+            <div class="product-bottom">
+              <span class="product-price">₹${p.price}</span>
+              <button class="add-to-bag">Add to Bag</button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+      html += '</div>';
+      container.innerHTML = html;
+    }
+
+    function handleSearch(shouldScroll = false) {
+      const searchTerm = document.getElementById('search-input').value.toLowerCase();
+      const filtered = allProducts.filter(p =>
+        p.product_name.toLowerCase().includes(searchTerm) ||
+        p.category.toLowerCase().includes(searchTerm) ||
+        p.color.toLowerCase().includes(searchTerm)
+      );
+      renderProducts(filtered);
+      if (shouldScroll && filtered.length > 0) {
+        scrollToSection("product-list");
+      }
+    }
+
+    function toggleDrawer() {
+      document.getElementById("drawer").classList.toggle("open");
+    }
+
+    function scrollToSection(id) {
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function toggleSearchBar() {
+      const searchBar = document.getElementById("search-bar");
+      const logo = document.getElementById("logo");
+      const isHidden = searchBar.style.display === "none" || searchBar.style.display === "";
+      if (isHidden) {
+        searchBar.style.display = "block";
+        logo.style.marginRight = "20px";
+        document.getElementById("search-input").focus();
+        document.addEventListener("click", handleOutsideClick);
+        document.addEventListener("keydown", handleEscapeKey);
+      } else {
+        closeSearchBar();
+      }
+    }
+
+    function handleOutsideClick(e) {
+      const searchBar = document.getElementById("search-bar");
+      const searchWrapper = document.querySelector(".search-wrapper");
+      const navSearchIcon = document.getElementById("nav-search-icon");
+      if (!searchBar.contains(e.target) && !searchWrapper.contains(e.target) && e.target !== navSearchIcon) {
+        closeSearchBar();
+      }
+    }
+
+    function handleEscapeKey(e) {
+      if (e.key === "Escape") {
+        closeSearchBar();
+      }
+    }
+
+    function closeSearchBar() {
+      document.getElementById("search-bar").style.display = "none";
+      document.getElementById("logo").style.marginRight = "auto";
+      document.removeEventListener("click", handleOutsideClick);
+      document.removeEventListener("keydown", handleEscapeKey);
+    }
+
+    function closePopup() {
+      document.getElementById("errorPopup").style.display = "none";
+    }
+
+    function showErrorPopup() {
+      document.getElementById("errorPopup").style.display = "flex";
+    }
+
+    window.onscroll = function () {
+      const btn = document.getElementById("backToTop");
+      if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+        btn.style.display = "block";
+      } else {
+        btn.style.display = "none";
+      }
+    };
+
     window.addEventListener('DOMContentLoaded', loadProducts);
 
-    // Show/hide button on scroll
-window.onscroll = function () {
-  const btn = document.getElementById("backToTop");
-  if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
-    btn.style.display = "block";
-  } else {
-    btn.style.display = "none";
-  }
-};
+    document.addEventListener("DOMContentLoaded", function () {
+      document.getElementById("backToTop").addEventListener("click", function () {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    });
+  </script>
 
-// Scroll to top when clicked
-document.addEventListener("DOMContentLoaded", function () {
-  document.getElementById("backToTop").addEventListener("click", function () {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
-});
-
-function closePopup() {
-  document.getElementById("errorPopup").style.display = "none";
-}
-
-function showErrorPopup() {
-  document.getElementById("errorPopup").style.display = "flex";
-}
-  
-</script>
-  <button id="backToTop" title="Go to top">
-  <i class="fas fa-arrow-up"></i>
-  </button>
-  <!-- Popup -->
-<div id="errorPopup" class="popup-overlay" style="display: none;">
-  <div class="popup-content">
-    <img src="tape-animal.png" alt="Error Illustration" />
-    <h2>Oops! We lost the fit.</h2>
-    <p>But hey, we're all about making things fit, We will head back and fix it!</p>
-    <button onclick="closePopup()">Go back home</button>
-  </div>
-</div>
 </body>
 </html>
