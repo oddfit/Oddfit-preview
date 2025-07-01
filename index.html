@@ -4,26 +4,22 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>OddFit — Rewriting the Size Guide</title>
-
   <meta name="description" content="OddFit brings Indo-western fashion with inclusive sizes like S+, M+, L+, XL+. Shop stylish comfort wear for all body types." />
   <meta name="keywords" content="OddFit, Indo-western, fashion, inclusive sizing, S+, M+, L+, XL+, comfort wear, ethnic wear" />
   <meta name="author" content="OddFit Team" />
-
-  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  
-  <!-- CSS -->
   <link rel="stylesheet" href="styles.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 </head>
 <body>
+
   <!-- Navbar -->
   <header class="navbar">
     <div class="nav-left">
       <i class="fas fa-bars menu-icon" onclick="toggleDrawer()"></i>
     </div>
     <div class="nav-center">
-      <div class="logo">
+      <div class="logo" id="logo">
         <img src="logo_mini.png" alt="OddFit Logo" />
       </div>
       <div class="search-bar" id="search-bar" style="display: none;">
@@ -40,7 +36,7 @@
     </div>
   </header>
 
-  <!-- Drawer -->
+  <!-- Drawer Menu -->
   <aside id="drawer" class="drawer">
     <div class="drawer-header">
       <i class="fas fa-times close-icon" onclick="toggleDrawer()"></i>
@@ -55,12 +51,12 @@
     </ul>
   </aside>
 
-  <!-- Hero -->
+  <!-- Hero Section -->
   <main>
     <section class="hero">
       <img src="banner.png" alt="OddFit Hero Banner" />
       <div class="cta-buttons">
-        <button class="cta-button" onclick="scrollToSection('category-carousel')">SHOP WOMENS</button>
+        <button class="cta-button shop-women" onclick="scrollToSection('category-carousel')">SHOP WOMENS</button>
         <button class="cta-button" onclick="showErrorPopup()">SHOP MENS</button>
       </div>
     </section>
@@ -79,7 +75,7 @@
       </div>
     </section>
 
-    <!-- Categories -->
+    <!-- Category Carousel -->
     <section class="category-carousel" id="category-carousel">
       <h2>Shop by Category</h2>
       <div class="category-track" id="category-track"></div>
@@ -89,22 +85,31 @@
     <section id="product-list" class="product-grid hidden"></section>
   </main>
 
-  <!-- Back to Top -->
-  <button id="backToTop" title="Go to top">
-    <i class="fas fa-arrow-up"></i>
-  </button>
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-social">
+        <a href="https://instagram.com/oddfit.in" target="_blank"><img src="instagram.png" alt="Instagram" class="footer-icon" /></a>
+        <a href="https://wa.me/917259116896" target="_blank"><img src="whatsapp.png" alt="WhatsApp" class="footer-icon" /></a>
+      </div>
+      <p class="footer-text">© 2025 OddFit. All rights reserved.</p>
+    </div>
+  </footer>
 
-  <!-- Error Popup -->
+  <!-- Back to Top Button -->
+  <button id="backToTop" title="Go to top"><i class="fas fa-arrow-up"></i></button>
+
+  <!-- Popup -->
   <div id="errorPopup" class="popup-overlay" style="display: none;">
     <div class="popup-content">
       <img src="tape-animal.png" alt="Error Illustration" />
       <h2>Oops! We lost the fit.</h2>
-      <p>But hey, we're all about making things fit, We will head back and fix it!</p>
+      <p>But hey, we're all about making things fit. We'll fix it soon!</p>
       <button onclick="closePopup()">Go back home</button>
     </div>
   </div>
 
-  <!-- JavaScript -->
+  <!-- Scripts -->
   <script>
     let allProducts = [];
 
@@ -127,16 +132,22 @@
       `).join('');
     }
 
+    function filterByCategory(cat) {
+      const filtered = allProducts.filter(p => p.category.toLowerCase() === cat.toLowerCase());
+      renderProducts(filtered);
+    }
+
     function renderProducts(products) {
       const container = document.getElementById('product-list');
       container.classList.remove("hidden");
-      let heading = products.length ? `${products[0].category} - Products` : 'Products';
+      let heading = products.length > 0 ? `${products[0].category} - Products` : 'Products';
       let html = `<h2>${heading}</h2><div class="product-grid-container">`;
       html += products.map(p => `
         <div class="product-card-modern">
           <div class="product-image-wrapper">
             <img src="${p.image_url}" alt="${p.product_name}" class="product-img" />
-            <i class="fas fa-heart wishlist-icon" onclick="toggleFavorite(this)"></i>          </div>
+            <i class="fas fa-heart wishlist-icon"></i>
+          </div>
           <div class="product-info">
             <h3 class="product-name">${p.product_name}</h3>
             <p class="product-meta">${p.color} | ${p.size}</p>
@@ -165,11 +176,6 @@
       }
     }
 
-    function filterByCategory(cat) {
-      const filtered = allProducts.filter(p => p.category.toLowerCase() === cat.toLowerCase());
-      renderProducts(filtered);
-    }
-
     function toggleDrawer() {
       document.getElementById("drawer").classList.toggle("open");
     }
@@ -181,9 +187,8 @@
 
     function toggleSearchBar() {
       const searchBar = document.getElementById("search-bar");
-      const logo = document.querySelector(".logo");
+      const logo = document.getElementById("logo");
       const isHidden = searchBar.style.display === "none" || searchBar.style.display === "";
-
       if (isHidden) {
         searchBar.style.display = "block";
         logo.style.marginRight = "20px";
@@ -193,25 +198,28 @@
       } else {
         closeSearchBar();
       }
+    }
 
-      function handleOutsideClick(e) {
-        if (!searchBar.contains(e.target) && e.target.id !== "nav-search-icon") {
-          closeSearchBar();
-        }
+    function handleOutsideClick(e) {
+      const searchBar = document.getElementById("search-bar");
+      const searchWrapper = document.querySelector(".search-wrapper");
+      const navSearchIcon = document.getElementById("nav-search-icon");
+      if (!searchBar.contains(e.target) && !searchWrapper.contains(e.target) && e.target !== navSearchIcon) {
+        closeSearchBar();
       }
+    }
 
-      function handleEscapeKey(e) {
-        if (e.key === "Escape") {
-          closeSearchBar();
-        }
+    function handleEscapeKey(e) {
+      if (e.key === "Escape") {
+        closeSearchBar();
       }
+    }
 
-      function closeSearchBar() {
-        searchBar.style.display = "none";
-        logo.style.marginRight = "auto";
-        document.removeEventListener("click", handleOutsideClick);
-        document.removeEventListener("keydown", handleEscapeKey);
-      }
+    function closeSearchBar() {
+      document.getElementById("search-bar").style.display = "none";
+      document.getElementById("logo").style.marginRight = "auto";
+      document.removeEventListener("click", handleOutsideClick);
+      document.removeEventListener("keydown", handleEscapeKey);
     }
 
     function closePopup() {
@@ -222,28 +230,23 @@
       document.getElementById("errorPopup").style.display = "flex";
     }
 
-    window.addEventListener('DOMContentLoaded', () => {
-      loadProducts();
+    window.onscroll = function () {
+      const btn = document.getElementById("backToTop");
+      if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+        btn.style.display = "block";
+      } else {
+        btn.style.display = "none";
+      }
+    };
 
-      // Back to top visibility
-      window.onscroll = function () {
-        const btn = document.getElementById("backToTop");
-        btn.style.display = (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) ? "block" : "none";
-      };
+    window.addEventListener('DOMContentLoaded', loadProducts);
 
-      // Scroll to top click
+    document.addEventListener("DOMContentLoaded", function () {
       document.getElementById("backToTop").addEventListener("click", function () {
         window.scrollTo({ top: 0, behavior: 'smooth' });
       });
-
-      // Reset scroll on reload
-      window.onbeforeunload = function () {
-        window.scrollTo(0, 0);
-      };
     });
-    function toggleFavorite(icon) {
-      icon.classList.toggle("active");
-    }
   </script>
+
 </body>
 </html>
