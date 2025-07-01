@@ -170,16 +170,25 @@ function handleOutsideClick(e) {
         heading = `${products[0].category} - Products`;
       }
       let html = `<h2>${heading}</h2>`;
-      // Append each product card
-      html += products.map(p => `
-        <div class="product-card">
-          <img src="${p.image_url}" alt="${p.product_name}" />
-          <h3>${p.product_name}</h3>
-          <p>${p.category} | ${p.color} | ${p.size}</p>
-          <p><strong>₹${p.price}</strong></p>
-        </div>
-      `).join('');
-      container.innerHTML = html;
+html += '<div class="product-grid-container">';
+html += products.map(p => `
+  <div class="product-card-modern">
+    <div class="product-image-wrapper">
+      <img src="${p.image_url}" alt="${p.product_name}" class="product-img" />
+      <i class="fas fa-heart wishlist-icon"></i>
+    </div>
+    <div class="product-info">
+      <h3 class="product-name">${p.product_name}</h3>
+      <p class="product-meta">${p.color} | ${p.size}</p>
+      <p class="product-category">${p.category}</p>
+      <div class="product-bottom">
+        <span class="product-price">₹${p.price}</span>
+        <button class="add-to-bag">Add to Bag</button>
+      </div>
+    </div>
+  </div>
+`).join('');
+html += '</div>';
     }
 
     function handleSearch(shouldScroll = false) {
