@@ -442,3 +442,11 @@ body {
 .popup-content button:hover {
   background: #e14b4b;
 }
+
+.product-grid-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  justify-content: center;
+  padding: 20px 0;
+}
