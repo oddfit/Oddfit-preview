@@ -126,7 +126,7 @@
       const track = document.getElementById('category-track');
       track.innerHTML = categories.map(cat => `
         <div class="category-card" onclick="filterByCategory('${cat}'); scrollToSection('product-list')">
-          <img src="${cat.toLowerCase()}.png" alt="${cat}" />
+          <img src="${cat.toLowerCase().replace(/\s+/g, '_')}.png" alt="${cat}" />
           <p>${cat}</p>
         </div>
       `).join('');
