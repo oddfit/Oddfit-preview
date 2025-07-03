@@ -29,6 +29,13 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+// 🚫 Redirect if not logged in
+onAuthStateChanged(auth, (user) => {
+  if (!user) {
+    window.location.href = "login.html";
+  }
+});
+
 const db = getFirestore(app);
 const storage = getStorage(app);
 
