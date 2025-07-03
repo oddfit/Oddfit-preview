@@ -55,7 +55,7 @@ async function loadSiteConfig() {
     console.log("Fetched Data",docSnap.data());
     const data = docSnap.data();
     if (data.logo_mobile) {
-      document.getElementById("logoPreview").src = data.logo_url;
+      document.getElementById("logoPreview").src = data.logo_mobile;
     }
     if (data.primary_color) {
       document.getElementById("colorInput").value = data.primary_color;
