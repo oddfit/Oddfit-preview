@@ -51,7 +51,6 @@ onAuthStateChanged(auth, async (user) => {
 async function loadSiteConfig() {
   const docRef = doc(db, "branding_config", "logo_banner");
   const docSnap = await getDoc(docRef);
-  console.log(docSnap);
   if (docSnap.exists()) {
     console.log("Fetched Data",docSnap.data());
     const data = docSnap.data();
