@@ -1,21 +1,24 @@
+// Firebase setup
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
 import {
-  getAuth,
-  onAuthStateChanged,
-  signOut,
-} from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
-import {
   getFirestore,
-  doc,
-  getDoc,
-  setDoc,
+  collection,
+  addDoc,
+  getDocs,
+  updateDoc,
+  doc
 } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 import {
   getStorage,
   ref,
   uploadBytes,
-  getDownloadURL,
+  getDownloadURL
 } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-storage.js";
+import {
+  getAuth,
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
 
 // Firebase config
 const firebaseConfig = {
@@ -28,84 +31,151 @@ const firebaseConfig = {
   };
 
 const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-// 🚫 Redirect if not logged in
-onAuthStateChanged(auth, (user) => {
-  if (!user) {
-    window.location.href = "login.html";
-  }
-});
-
 const db = getFirestore(app);
+const auth = getAuth(app);
 const storage = getStorage(app);
 
-onAuthStateChanged(auth, async (user) => {
+// Elements
+const productDropdown = document.getElementById("productDropdown");
+const nameInput = document.getElementById("productName");
+const categoryInput = document.getElementById("category");
+const colorInput = document.getElementById("color");
+const sizeInput = document.getElementById("size");
+const priceInput = document.getElementById("price");
+const availableInput = document.getElementById("available");
+const imageInput = document.getElementById("imageInput");
+const imagePreview = document.getElementById("imagePreview");
+const addBtn = document.getElementById("addProductBtn");
+const saveBtn = document.getElementById("saveProductBtn");
+
+// Auth check
+onAuthStateChanged(auth, user => {
   if (!user) {
-    alert("You must be logged in to access this page.");
     window.location.href = "login.html";
   } else {
-    loadSiteConfig();
+    loadProducts();
   }
 });
 
-async function loadSiteConfig() {
-  const docRef = doc(db, "branding_config", "logo_banner");
-  const docSnap = await getDoc(docRef);
-  if (docSnap.exists()) {
-    console.log("Fetched Data",docSnap.data());
-    const data = docSnap.data();
-    if (data.logo_mobile) {
-      document.getElementById("logoPreview").src = data.logo_mobile;
-    }
-    if (data.primary_color) {
-      document.getElementById("colorInput").value = data.primary_color;
-    }
-    if (data.font_family) {
-      document.getElementById("fontInput").value = data.font_family;
-    }
-  }
+function logout() {
+  signOut(auth).then(() => window.location.href = "login.html");
 }
+window.logout = logout;
 
-window.updateSiteConfig = async () => {
-  const logoFile = document.getElementById("logoInput").files[0];
-  const color = document.getElementById("colorInput").value;
-  const font = document.getElementById("fontInput").value;
+// Load products for dropdown
+async function loadProducts() {
+  productDropdown.innerHTML = "<option value=''>-- Select Product --</option>";
+  const snapshot = await getDocs(collection(db, "products"));
+  snapshot.forEach(docSnap => {
+    const p = docSnap.data();
+    const option = document.createElement("option");
+    option.value = docSnap.id;
+    option.textContent = p.product_name;
+    productDropdown.appendChild(option);
+  });
+}
+window.loadProducts = loadProducts;
 
-  let logoURL = null;
-  if (logoFile) {
-    const logoRef = ref(storage, `assets/logo/${logoFile.name}`);
-    await uploadBytes(logoRef, logoFile);
-    logoURL = await getDownloadURL(logoRef);
+// Add product
+addBtn.addEventListener("click", async () => {
+  const imageFiles = imageInput.files;
+  const imageUrls = [];
+
+  for (const file of imageFiles) {
+    const imageRef = ref(storage, `assets/images/products/${file.name}`);
+    await uploadBytes(imageRef, file);
+    const url = await getDownloadURL(imageRef);
+    imageUrls.push(url);
   }
 
-  const updateData = {
-    ...(logoURL && { logo_url: logoURL }),
-    primary_color: color,
-    font_family: font,
+  const sizes = Array.from(sizeInput.selectedOptions).map(opt => opt.value);
+
+  await addDoc(collection(db, "products"), {
+    product_name: nameInput.value,
+    category: categoryInput.value,
+    color: colorInput.value,
+    size: sizes,
+    price: parseFloat(priceInput.value),
+    image_url: imageUrls,
+    available: availableInput.checked
+  });
+
+  alert("Product added!");
+  loadProducts();
+  clearForm();
+});
+
+// Load selected product details
+productDropdown.addEventListener("change", async () => {
+  const id = productDropdown.value;
+  if (!id) return clearForm();
+
+  const snapshot = await getDocs(collection(db, "products"));
+  snapshot.forEach(docSnap => {
+    if (docSnap.id === id) {
+      const data = docSnap.data();
+      nameInput.value = data.product_name || "";
+      categoryInput.value = data.category || "";
+      colorInput.value = data.color || "";
+      priceInput.value = data.price || "";
+      availableInput.checked = data.available || false;
+
+      // Set selected sizes
+      Array.from(sizeInput.options).forEach(opt => {
+        opt.selected = data.size?.includes(opt.value);
+      });
+
+      imagePreview.innerHTML = data.image_url
+        .map(url => `<img src="${url}" alt="product" style="width:80px;height:auto;margin:5px;" />`)
+        .join("");
+    }
+  });
+});
+
+// Save updates to product
+saveBtn.addEventListener("click", async () => {
+  const id = productDropdown.value;
+  if (!id) return alert("Select a product to edit");
+
+  const imageFiles = imageInput.files;
+  let imageUrls = [];
+
+  if (imageFiles.length > 0) {
+    for (const file of imageFiles) {
+      const imageRef = ref(storage, `assets/images/products/${file.name}`);
+      await uploadBytes(imageRef, file);
+      const url = await getDownloadURL(imageRef);
+      imageUrls.push(url);
+    }
+  }
+
+  const sizes = Array.from(sizeInput.selectedOptions).map(opt => opt.value);
+
+  const update = {
+    product_name: nameInput.value,
+    category: categoryInput.value,
+    color: colorInput.value,
+    size: sizes,
+    price: parseFloat(priceInput.value),
+    available: availableInput.checked
   };
 
-  await setDoc(doc(db, "site_config", "main"), updateData, { merge: true });
-  alert("Configuration updated.");
-};
+  if (imageUrls.length > 0) update.image_url = imageUrls;
 
-window.uploadBannerImage = async () => {
-  const file = document.getElementById("bannerInput").files[0];
-  const device = document.getElementById("deviceType").value;
-  if (!file) return alert("Please select a banner image");
+  await updateDoc(doc(db, "products", id), update);
+  alert("Product updated!");
+  loadProducts();
+  clearForm();
+});
 
-  const storageRef = ref(storage, `assets/banner/banner_${device}.png`);
-  await uploadBytes(storageRef, file);
-  const url = await getDownloadURL(storageRef);
-  document.getElementById("bannerPreview").src = url;
-
-  await setDoc(doc(db, "site_config", "main"), {
-    [`banner_${device}_url`]: url,
-  }, { merge: true });
-
-  alert("Banner uploaded.");
-};
-
-window.logout = async () => {
-  await signOut(auth);
-  window.location.href = "login.html";
-};
+function clearForm() {
+  nameInput.value = "";
+  categoryInput.value = "";
+  colorInput.value = "";
+  priceInput.value = "";
+  sizeInput.selectedIndex = -1;
+  imageInput.value = "";
+  availableInput.checked = false;
+  imagePreview.innerHTML = "";
+  productDropdown.value = "";
+}
