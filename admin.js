@@ -53,7 +53,7 @@ async function loadSiteConfig() {
   const docSnap = await getDoc(docRef);
   if (docSnap.exists()) {
     const data = docSnap.data();
-    if (data.logo_url) {
+    if (data.logo_mobile) {
       document.getElementById("logoPreview").src = data.logo_url;
     }
     if (data.primary_color) {
