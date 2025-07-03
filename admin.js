@@ -63,7 +63,7 @@ function logout() {
 window.logout = logout;
 
 // Load products for dropdown
-async function loadProductDetails() {
+async function loadProducts() {
   productDropdown.innerHTML = "<option value=''>-- Select Product --</option>";
   const snapshot = await getDocs(collection(db, "products"));
   snapshot.forEach(docSnap => {
@@ -74,7 +74,7 @@ async function loadProductDetails() {
     productDropdown.appendChild(option);
   });
 }
-window.loadProductDetails = loadProductDetails;
+window.loadProducts = loadProducts;
 
 // Add product
 addBtn.addEventListener("click", async () => {
@@ -101,35 +101,15 @@ addBtn.addEventListener("click", async () => {
   });
 
   alert("Product added!");
-  loadProductDetails();
+  loadProducts();
   clearForm();
 });
 
-// Load selected product details
 productDropdown.addEventListener("change", async () => {
   const id = productDropdown.value;
   if (!id) return clearForm();
 
-  const snapshot = await getDocs(collection(db, "products"));
-  snapshot.forEach(docSnap => {
-    if (docSnap.id === id) {
-      const data = docSnap.data();
-      nameInput.value = data.product_name || "";
-      categoryInput.value = data.category || "";
-      colorInput.value = data.color || "";
-      priceInput.value = data.price || "";
-      availableInput.checked = data.available || false;
-
-      // Set selected sizes
-      Array.from(sizeInput.options).forEach(opt => {
-        opt.selected = data.size?.includes(opt.value);
-      });
-
-      imagePreview.innerHTML = data.image_url
-        .map(url => `<img src="${url}" alt="product" style="width:80px;height:auto;margin:5px;" />`)
-        .join("");
-    }
-  });
+  await loadProductDetails(id);
 });
 
 // Save updates to product
@@ -178,4 +158,34 @@ function clearForm() {
   availableInput.checked = false;
   imagePreview.innerHTML = "";
   productDropdown.value = "";
+}
+
+async function loadProductDetails(productId) {
+  if (!productId) {
+    clearForm();
+    return;
+  }
+
+  const productDoc = doc(db, "products", productId);
+  const docSnap = await getDoc(productDoc);
+  if (docSnap.exists()) {
+    const data = docSnap.data();
+    nameInput.value = data.product_name || "";
+    categoryInput.value = data.category || "";
+    colorInput.value = data.color || "";
+    priceInput.value = data.price || "";
+    availableInput.checked = data.available || false;
+
+    // Set selected sizes
+    Array.from(sizeInput.options).forEach(opt => {
+      opt.selected = data.size?.includes(opt.value);
+    });
+
+    // Preview image URLs
+    imagePreview.innerHTML = (data.image_url || [])
+      .map(url => `<img src="${url}" alt="product" style="width:80px;height:auto;margin:5px;" />`)
+      .join("");
+  } else {
+    alert("Product not found.");
+  }
 }
