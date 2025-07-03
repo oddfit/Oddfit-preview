@@ -49,6 +49,7 @@ onAuthStateChanged(auth, async (user) => {
 });
 
 async function loadSiteConfig() {
+  console.log(doc());
   const docRef = doc(db, "branding_config", "logo_banner");
   const docSnap = await getDoc(docRef);
   console.log(docSnap);
