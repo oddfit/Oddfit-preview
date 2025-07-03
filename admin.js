@@ -1,3 +1,22 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+import {
+  getAuth,
+  onAuthStateChanged,
+  signOut,
+} from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  setDoc,
+} from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+import {
+  getStorage,
+  ref,
+  uploadBytes,
+  getDownloadURL,
+} from "https://www.gstatic.com/firebasejs/10.11.0/firebase-storage.js";
+
 // Firebase config
 const firebaseConfig = {
     apiKey: "AIzaSyCnunf_kT-rRqgYJyRUKzPKT1O1AgwCXRo",
@@ -8,64 +27,77 @@ const firebaseConfig = {
     appId: "1:769787842608:web:7395782b9a0ca0b9d51df5"
   };
 
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.firestore();
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const storage = getStorage(app);
 
-function login() {
-  const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value.trim();
+onAuthStateChanged(auth, async (user) => {
+  if (!user) {
+    alert("You must be logged in to access this page.");
+    window.location.href = "login.html";
+  } else {
+    loadSiteConfig();
+  }
+});
 
-  auth.signInWithEmailAndPassword(email, password)
-    .then(() => {
-      loadSettings();
-      document.getElementById("login-section").style.display = "none";
-      document.getElementById("admin-panel").style.display = "block";
-    })
-    .catch(err => {
-      document.getElementById("login-error").innerText = err.message;
-    });
-}
-
-function logout() {
-  auth.signOut().then(() => {
-    document.getElementById("login-section").style.display = "block";
-    document.getElementById("admin-panel").style.display = "none";
-  });
-}
-
-function loadSettings() {
-  db.collection("site_settings").doc("banners").get().then(doc => {
-    if (doc.exists) {
-      const data = doc.data();
-      document.getElementById("banner_mobile").value = data.mobile || "";
-      document.getElementById("banner_tablet").value = data.tablet || "";
-      document.getElementById("banner_desktop").value = data.desktop || "";
+async function loadSiteConfig() {
+  const docRef = doc(db, "site_config", "main");
+  const docSnap = await getDoc(docRef);
+  if (docSnap.exists()) {
+    const data = docSnap.data();
+    if (data.logo_url) {
+      document.getElementById("logoPreview").src = data.logo_url;
     }
-  });
-
-  db.collection("site_settings").doc("logo").get().then(doc => {
-    if (doc.exists) {
-      document.getElementById("logo_url").value = doc.data().url || "";
+    if (data.primary_color) {
+      document.getElementById("colorInput").value = data.primary_color;
     }
-  });
+    if (data.font_family) {
+      document.getElementById("fontInput").value = data.font_family;
+    }
+  }
 }
 
-function saveSettings() {
-  const mobile = document.getElementById("banner_mobile").value;
-  const tablet = document.getElementById("banner_tablet").value;
-  const desktop = document.getElementById("banner_desktop").value;
-  const logo = document.getElementById("logo_url").value;
+window.updateSiteConfig = async () => {
+  const logoFile = document.getElementById("logoInput").files[0];
+  const color = document.getElementById("colorInput").value;
+  const font = document.getElementById("fontInput").value;
 
-  db.collection("site_settings").doc("banners").set({
-    mobile,
-    tablet,
-    desktop
-  });
+  let logoURL = null;
+  if (logoFile) {
+    const logoRef = ref(storage, `assets/logo/${logoFile.name}`);
+    await uploadBytes(logoRef, logoFile);
+    logoURL = await getDownloadURL(logoRef);
+  }
 
-  db.collection("site_settings").doc("logo").set({
-    url: logo
-  });
+  const updateData = {
+    ...(logoURL && { logo_url: logoURL }),
+    primary_color: color,
+    font_family: font,
+  };
 
-  document.getElementById("save-msg").innerText = "Settings saved!";
-}
+  await setDoc(doc(db, "site_config", "main"), updateData, { merge: true });
+  alert("Configuration updated.");
+};
+
+window.uploadBannerImage = async () => {
+  const file = document.getElementById("bannerInput").files[0];
+  const device = document.getElementById("deviceType").value;
+  if (!file) return alert("Please select a banner image");
+
+  const storageRef = ref(storage, `assets/banner/banner_${device}.png`);
+  await uploadBytes(storageRef, file);
+  const url = await getDownloadURL(storageRef);
+  document.getElementById("bannerPreview").src = url;
+
+  await setDoc(doc(db, "site_config", "main"), {
+    [`banner_${device}_url`]: url,
+  }, { merge: true });
+
+  alert("Banner uploaded.");
+};
+
+window.logout = async () => {
+  await signOut(auth);
+  window.location.href = "login.html";
+};
