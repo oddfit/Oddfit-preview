@@ -63,7 +63,7 @@ function logout() {
 window.logout = logout;
 
 // Load products for dropdown
-async function loadProducts() {
+async function loadProductDetails() {
   productDropdown.innerHTML = "<option value=''>-- Select Product --</option>";
   const snapshot = await getDocs(collection(db, "products"));
   snapshot.forEach(docSnap => {
@@ -74,7 +74,7 @@ async function loadProducts() {
     productDropdown.appendChild(option);
   });
 }
-window.loadProducts = loadProducts;
+window.loadProductDetails = loadProductDetails;
 
 // Add product
 addBtn.addEventListener("click", async () => {
@@ -101,7 +101,7 @@ addBtn.addEventListener("click", async () => {
   });
 
   alert("Product added!");
-  loadProducts();
+  loadProductDetails();
   clearForm();
 });
 
