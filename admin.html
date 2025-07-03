@@ -22,7 +22,7 @@
       <!-- Dropdown to select product -->
       <label>Select Product to Edit:</label>
       <select id="productDropdown"></select>
-      <button onclick="loadProductDetails()">Load</button>
+      <button onclick="loadProductDetails(document.getElementById('productDropdown').value)">Load</button>
       <hr />
 
       <!-- Product form -->
