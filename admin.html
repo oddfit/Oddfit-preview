@@ -2,45 +2,47 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Admin Panel – OddFit</title>
+  <title>Admin Panel — OddFit</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="admin.css" />
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-storage.js"></script>
 </head>
 <body>
-  <div id="login-section">
-    <h2>Admin Login</h2>
-    <input type="email" id="email" placeholder="Email" />
-    <input type="password" id="password" placeholder="Password" />
-    <button onclick="login()">Login</button>
-    <p id="login-error" style="color: red;"></p>
-  </div>
-
-  <div id="admin-panel" style="display: none;">
-    <h2>Welcome Admin</h2>
-    <button onclick="logout()">Logout</button>
-
-    <div id="admin-content">
-      <h3>Site Settings</h3>
-      <label>Banner Image URL (Mobile)</label>
-      <input id="banner_mobile" type="text" />
-
-      <label>Banner Image URL (Tablet)</label>
-      <input id="banner_tablet" type="text" />
-
-      <label>Banner Image URL (Desktop)</label>
-      <input id="banner_desktop" type="text" />
-
-      <label>Logo Image URL</label>
-      <input id="logo_url" type="text" />
-
-      <button onclick="saveSettings()">Save Settings</button>
-      <p id="save-msg" style="color: green;"></p>
+  <div id="admin-container">
+    <h1>OddFit Admin Panel</h1>
+    <div class="section">
+      <h2>Site Config</h2>
+      <label>Logo Image:</label>
+      <input type="file" id="logoInput" />
+      <img id="logoPreview" src="#" alt="Logo Preview" />
+      <br />
+      <label>Primary Color:</label>
+      <input type="color" id="colorInput" />
+      <br />
+      <label>Font:</label>
+      <input type="text" id="fontInput" />
+      <br />
+      <button onclick="updateSiteConfig()">Save Changes</button>
     </div>
+    <div class="section">
+      <h2>Banner Image</h2>
+      <label>Device Type:</label>
+      <select id="deviceType">
+        <option value="mobile">Mobile</option>
+        <option value="tablet">Tablet</option>
+        <option value="desktop">Desktop</option>
+      </select>
+      <input type="file" id="bannerInput" />
+      <button onclick="uploadBannerImage()">Upload Banner</button>
+      <img id="bannerPreview" src="#" alt="Banner Preview" />
+    </div>
+    <button onclick="logout()">Logout</button>
   </div>
 
-  <script src="admin.js"></script>
+  <script type="module" src="admin.js"></script>
 </body>
 </html>
