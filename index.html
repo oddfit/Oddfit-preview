@@ -14,6 +14,24 @@
 
   <!-- Styles -->
   <link rel="stylesheet" href="styles.css" />
+  <script>
+  const firebaseConfig = {
+    apiKey: "AIza....",
+    authDomain: "your-project-id.firebaseapp.com",
+    projectId: "your-project-id",
+    storageBucket: "your-project-id.appspot.com",
+    messagingSenderId: "123456789",
+    appId: "1:123456789:web:abc123def456"
+  };
+
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+
+  // Initialize Firestore and Storage
+  const db = firebase.firestore();
+  const storage = firebase.storage();
+</script>
+
 </head>
 <body>
   <!-- Navigation Header -->
