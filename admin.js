@@ -189,3 +189,4 @@ async function loadProductDetails(productId) {
     alert("Product not found.");
   }
 }
+window.loadProductDetails = loadProductDetails;
