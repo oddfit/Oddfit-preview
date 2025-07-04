@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Admin Panel — OddFit</title>
+  <title>OddFit Admin Panel</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="admin.css" />
 
@@ -19,40 +19,41 @@
     <div class="section">
       <h2>Product Management</h2>
 
-      <!-- Dropdown to select product -->
-      <label>Select Product to Edit:</label>
+      <!-- Product Selection -->
+      <label for="productDropdown">Select Existing Product:</label>
       <select id="productDropdown"></select>
-      <!-- <button onclick="loadProductDetails(document.getElementById('productDropdown').value)">Load</button> -->
+      <button id="newProductBtn">Add New Product</button>
+      <button id="editBtn" style="display:none;">Edit</button>
       <hr />
 
-      <!-- Product form -->
+      <!-- Product Form -->
       <form id="productForm">
         <label>Product Name:</label>
-        <input type="text" id="productName" required /><br />
+        <input type="text" id="productName" required disabled /><br />
 
         <label>Category:</label>
-        <select id="productCategory" required></select><br />
+        <select id="productCategory" required disabled></select><br />
 
         <label>Color:</label>
-        <input type="text" id="productColor" required /><br />
+        <input type="text" id="productColor" required disabled /><br />
 
         <label>Size:</label>
         <div id="sizeCheckboxes"></div><br />
 
         <label>Price:</label>
-        <input type="number" id="productPrice" required /><br />
+        <input type="number" id="productPrice" required disabled /><br />
 
         <label>Available:</label>
-        <select id="productAvailable">
+        <select id="productAvailable" disabled>
           <option value="true">Yes</option>
           <option value="false">No</option>
         </select><br />
 
         <label>Product Images:</label>
-        <input type="file" id="productImages" multiple />
+        <input type="file" id="productImages" multiple disabled />
         <div id="imagePreviewContainer"></div><br />
 
-        <button type="submit">Save Product</button>
+        <button type="submit" id="saveBtn" style="display:none;">Save</button>
       </form>
     </div>
 
@@ -61,4 +62,4 @@
 
   <script type="module" src="admin.js"></script>
 </body>
-</html> 
+</html>
