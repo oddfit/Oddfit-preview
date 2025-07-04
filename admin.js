@@ -80,7 +80,7 @@ async function loadCategories() {
 }
 
 function renderSizes() {
-  const sizes = ["XS", "S", "M", "L", "XL", "XXL"];
+  const sizes = ["XS", "XS+", "S", "S+", "M", "M+", "L", "L+", "XL", "XL+", "XXL", "XXL+"];
   sizes.forEach(size => {
     const label = document.createElement("label");
     const checkbox = document.createElement("input");
@@ -107,6 +107,7 @@ async function loadProductDetails(id) {
   const snap = await getDoc(docRef);
   if (!snap.exists()) return;
   const data = snap.data();
+  console.log("Product Details:" + data);
   currentProductId = id;
   nameInput.value = data.product_name || "";
   categoryInput.value = data.category || "";
