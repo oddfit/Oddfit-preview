@@ -1,23 +1,13 @@
-// Firebase setup
+// admin.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
 import {
-  getFirestore,
-  collection,
-  addDoc,
-  getDocs,
-  updateDoc,
-  doc
+  getFirestore, collection, doc, addDoc, updateDoc, getDoc, getDocs
 } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 import {
-  getStorage,
-  ref,
-  uploadBytes,
-  getDownloadURL
+  getStorage, ref, uploadBytes, getDownloadURL
 } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-storage.js";
 import {
-  getAuth,
-  onAuthStateChanged,
-  signOut
+  getAuth, onAuthStateChanged, signOut
 } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
 
 // Firebase config
@@ -32,161 +22,161 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-const auth = getAuth(app);
 const storage = getStorage(app);
+const auth = getAuth(app);
 
-// Elements
-const productDropdown = document.getElementById("productDropdown");
+const dropdown = document.getElementById("productDropdown");
+const form = document.getElementById("productForm");
 const nameInput = document.getElementById("productName");
-const categoryInput = document.getElementById("category");
-const colorInput = document.getElementById("color");
-const sizeInput = document.getElementById("size");
-const priceInput = document.getElementById("price");
-const availableInput = document.getElementById("available");
-const imageInput = document.getElementById("imageInput");
-const imagePreview = document.getElementById("imagePreview");
-const addBtn = document.getElementById("addProductBtn");
-const saveBtn = document.getElementById("saveProductBtn");
+const categoryInput = document.getElementById("productCategory");
+const colorInput = document.getElementById("productColor");
+const priceInput = document.getElementById("productPrice");
+const availableInput = document.getElementById("productAvailable");
+const imageInput = document.getElementById("productImages");
+const imagePreview = document.getElementById("imagePreviewContainer");
+const sizeCheckboxes = document.getElementById("sizeCheckboxes");
+const editBtn = document.getElementById("editBtn");
+const saveBtn = document.getElementById("saveBtn");
+const newBtn = document.getElementById("newProductBtn");
 
-// Auth check
+let currentProductId = null;
+let mode = "view"; // view, edit, add
+
 onAuthStateChanged(auth, user => {
-  if (!user) {
-    window.location.href = "login.html";
-  } else {
-    loadProducts();
-  }
+  if (!user) location.href = "login.html";
+  else init();
 });
 
 function logout() {
-  signOut(auth).then(() => window.location.href = "login.html");
+  signOut(auth).then(() => location.href = "login.html");
 }
 window.logout = logout;
 
-// Load products for dropdown
-async function loadProducts() {
-  productDropdown.innerHTML = "<option value=''>-- Select Product --</option>";
-  const snapshot = await getDocs(collection(db, "products"));
-  snapshot.forEach(docSnap => {
-    const p = docSnap.data();
-    const option = document.createElement("option");
-    option.value = docSnap.id;
-    option.textContent = p.product_name;
-    productDropdown.appendChild(option);
+async function init() {
+  await loadDropdown();
+  await loadCategories();
+  renderSizes();
+}
+
+async function loadDropdown() {
+  dropdown.innerHTML = '<option value="">-- Select Product --</option>';
+  const snap = await getDocs(collection(db, "products"));
+  snap.forEach(doc => {
+    const opt = document.createElement("option");
+    opt.value = doc.id;
+    opt.textContent = doc.data().product_name;
+    dropdown.appendChild(opt);
   });
 }
-window.loadProducts = loadProducts;
 
-// Add product
-addBtn.addEventListener("click", async () => {
+async function loadCategories() {
+  const snap = await getDocs(collection(db, "categories"));
+  snap.forEach(doc => {
+    const opt = document.createElement("option");
+    opt.value = doc.data().name;
+    opt.textContent = doc.data().name;
+    categoryInput.appendChild(opt);
+  });
+}
+
+function renderSizes() {
+  const sizes = ["XS", "S", "M", "L", "XL", "XXL"];
+  sizes.forEach(size => {
+    const label = document.createElement("label");
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.value = size;
+    checkbox.disabled = true;
+    label.appendChild(checkbox);
+    label.append(" ", size);
+    sizeCheckboxes.appendChild(label);
+  });
+}
+
+function toggleForm(editable) {
+  [nameInput, categoryInput, colorInput, priceInput, imageInput, availableInput]
+    .forEach(input => input.disabled = !editable);
+  Array.from(sizeCheckboxes.querySelectorAll("input")).forEach(cb => cb.disabled = !editable);
+  saveBtn.style.display = editable ? "inline-block" : "none";
+  editBtn.style.display = editable ? "none" : "inline-block";
+}
+
+async function loadProductDetails(id) {
+  if (!id) return;
+  const docRef = doc(db, "products", id);
+  const snap = await getDoc(docRef);
+  if (!snap.exists()) return;
+  const data = snap.data();
+  currentProductId = id;
+  nameInput.value = data.product_name || "";
+  categoryInput.value = data.category || "";
+  colorInput.value = data.color || "";
+  priceInput.value = data.price || "";
+  availableInput.value = data.available ? "true" : "false";
+  Array.from(sizeCheckboxes.querySelectorAll("input")).forEach(cb => {
+    cb.checked = (data.size || []).includes(cb.value);
+  });
+  imagePreview.innerHTML = (data.image_url || []).map(url => `<img src="${url}" width="80" />`).join("");
+  toggleForm(false);
+  mode = "view";
+}
+
+function getFormData() {
+  const sizes = Array.from(sizeCheckboxes.querySelectorAll("input:checked"))
+    .map(cb => cb.value);
+  return {
+    product_name: nameInput.value,
+    category: categoryInput.value,
+    color: colorInput.value,
+    size: sizes,
+    price: parseFloat(priceInput.value),
+    available: availableInput.value === "true"
+  };
+}
+
+dropdown.addEventListener("change", e => {
+  loadProductDetails(e.target.value);
+});
+
+editBtn.addEventListener("click", () => {
+  toggleForm(true);
+  mode = "edit";
+});
+
+newBtn.addEventListener("click", () => {
+  currentProductId = null;
+  mode = "add";
+  form.reset();
+  imagePreview.innerHTML = "";
+  Array.from(sizeCheckboxes.querySelectorAll("input")).forEach(cb => cb.checked = false);
+  toggleForm(true);
+});
+
+form.addEventListener("submit", async e => {
+  e.preventDefault();
+  const formData = getFormData();
   const imageFiles = imageInput.files;
   const imageUrls = [];
 
   for (const file of imageFiles) {
-    const imageRef = ref(storage, `assets/images/products/${file.name}`);
-    await uploadBytes(imageRef, file);
-    const url = await getDownloadURL(imageRef);
+    const refPath = `assets/images/products/${Date.now()}_${file.name}`;
+    const imgRef = ref(storage, refPath);
+    await uploadBytes(imgRef, file);
+    const url = await getDownloadURL(imgRef);
     imageUrls.push(url);
   }
+  if (imageUrls.length > 0) formData.image_url = imageUrls;
 
-  const sizes = Array.from(sizeInput.selectedOptions).map(opt => opt.value);
-
-  await addDoc(collection(db, "products"), {
-    product_name: nameInput.value,
-    category: categoryInput.value,
-    color: colorInput.value,
-    size: sizes,
-    price: parseFloat(priceInput.value),
-    image_url: imageUrls,
-    available: availableInput.checked
-  });
-
-  alert("Product added!");
-  loadProducts();
-  clearForm();
-});
-
-productDropdown.addEventListener("change", async () => {
-  const id = productDropdown.value;
-  if (!id) return clearForm();
-
-  await loadProductDetails(id);
-});
-
-// Save updates to product
-saveBtn.addEventListener("click", async () => {
-  const id = productDropdown.value;
-  if (!id) return alert("Select a product to edit");
-
-  const imageFiles = imageInput.files;
-  let imageUrls = [];
-
-  if (imageFiles.length > 0) {
-    for (const file of imageFiles) {
-      const imageRef = ref(storage, `assets/images/products/${file.name}`);
-      await uploadBytes(imageRef, file);
-      const url = await getDownloadURL(imageRef);
-      imageUrls.push(url);
-    }
-  }
-
-  const sizes = Array.from(sizeInput.selectedOptions).map(opt => opt.value);
-
-  const update = {
-    product_name: nameInput.value,
-    category: categoryInput.value,
-    color: colorInput.value,
-    size: sizes,
-    price: parseFloat(priceInput.value),
-    available: availableInput.checked
-  };
-
-  if (imageUrls.length > 0) update.image_url = imageUrls;
-
-  await updateDoc(doc(db, "products", id), update);
-  alert("Product updated!");
-  loadProducts();
-  clearForm();
-});
-
-function clearForm() {
-  nameInput.value = "";
-  categoryInput.value = "";
-  colorInput.value = "";
-  priceInput.value = "";
-  sizeInput.selectedIndex = -1;
-  imageInput.value = "";
-  availableInput.checked = false;
-  imagePreview.innerHTML = "";
-  productDropdown.value = "";
-}
-
-async function loadProductDetails(productId) {
-  if (!productId) {
-    clearForm();
-    return;
-  }
-
-  const productDoc = doc(db, "products", productId);
-  const docSnap = await getDoc(productDoc);
-  if (docSnap.exists()) {
-    const data = docSnap.data();
-    nameInput.value = data.product_name || "";
-    categoryInput.value = data.category || "";
-    colorInput.value = data.color || "";
-    priceInput.value = data.price || "";
-    availableInput.checked = data.available || false;
-
-    // Set selected sizes
-    Array.from(sizeInput.options).forEach(opt => {
-      opt.selected = data.size?.includes(opt.value);
-    });
-
-    // Preview image URLs
-    imagePreview.innerHTML = (data.image_url || [])
-      .map(url => `<img src="${url}" alt="product" style="width:80px;height:auto;margin:5px;" />`)
-      .join("");
+  if (mode === "edit" && currentProductId) {
+    await updateDoc(doc(db, "products", currentProductId), formData);
+    alert("Product updated.");
   } else {
-    alert("Product not found.");
+    await addDoc(collection(db, "products"), formData);
+    alert("Product added.");
   }
-}
-window.loadProductDetails = loadProductDetails;
+
+  form.reset();
+  imagePreview.innerHTML = "";
+  loadDropdown();
+  toggleForm(false);
+});
