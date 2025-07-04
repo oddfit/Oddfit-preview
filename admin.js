@@ -107,9 +107,10 @@ async function loadProductDetails(id) {
   const snap = await getDoc(docRef);
   if (!snap.exists()) return;
   const data = snap.data();
-  console.log("Product Details:" + data);
+  // console.log("Product Details:" + data);
   currentProductId = id;
   nameInput.value = data.product_name || "";
+  console.log("Category: "+ data.category);
   categoryInput.value = data.category || "";
   colorInput.value = data.color || "";
   priceInput.value = data.price || "";
