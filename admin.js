@@ -98,7 +98,7 @@ function renderSizes() {
 function toggleForm(editable) {
   [nameInput, categoryInput, colorInput, priceInput, imageInput, availableInput]
     .forEach(input => input.disabled = !editable);
-  Array.from(sizeCheckboxes.querySelectorAll("input")).forEach(cb => cb.disabled = !editable);
+  Array.from(sizeCheckboxes.querySelectorAll("input")).forEach(cb => cb.disabled = false);
   saveBtn.style.display = editable ? "inline-block" : "none";
   editBtn.style.display = editable ? "none" : "inline-block";
 }
