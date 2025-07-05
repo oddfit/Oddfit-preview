@@ -67,7 +67,7 @@ async function loadDropdown() {
   });
 }
 
-// Load category options (only once, reused)
+// Load category options
 async function loadCategories(selected = null) {
   categoryInput.innerHTML = "";
   const snap = await getDocs(collection(db, "categories"));
@@ -98,11 +98,14 @@ function renderSizes() {
 function toggleForm(editable) {
   [nameInput, categoryInput, colorInput, priceInput, imageInput, availableInput]
     .forEach(input => input.disabled = !editable);
-  Array.from(sizeCheckboxes.querySelectorAll("input")).forEach(cb => cb.disabled = false);
+
+  Array.from(sizeCheckboxes.querySelectorAll("input")).forEach(cb => cb.disabled = !editable);
+
   saveBtn.style.display = editable ? "inline-block" : "none";
-  editBtn.style.display = editable ? "none" : "inline-block";
+  editBtn.style.display = editable && mode === "edit" ? "none" : "inline-block";
 }
 
+// Load selected product details
 async function loadProductDetails(id) {
   if (!id) return;
   const docRef = doc(db, "products", id);
@@ -117,7 +120,7 @@ async function loadProductDetails(id) {
   priceInput.value = data.price || "";
   availableInput.value = data.available ? "true" : "false";
 
-  // Load categories again to ensure selected option exists
+  // Ensure categories are loaded and selected
   await loadCategories(data.category || "");
 
   // Load selected sizes
@@ -126,9 +129,13 @@ async function loadProductDetails(id) {
   });
 
   // Load images
-  imagePreview.innerHTML = Array.isArray(data.image_url)
-    ? data.image_url.map(url => `<img src="${url}" width="80" />`).join("")
-    : `<img src="${data.image_url}" width="80" />`;
+  if (Array.isArray(data.image_url)) {
+    imagePreview.innerHTML = data.image_url.map(url => `<img src="${url}" width="80" />`).join("");
+  } else if (typeof data.image_url === "string" && data.image_url.trim()) {
+    imagePreview.innerHTML = `<img src="${data.image_url}" width="80" />`;
+  } else {
+    imagePreview.innerHTML = "<em>No images uploaded</em>";
+  }
 
   toggleForm(false);
   mode = "view";
@@ -166,13 +173,18 @@ form.addEventListener("submit", async e => {
   toggleForm(false);
 });
 
-dropdown.addEventListener("change", e => loadProductDetails(e.target.value));
+// Dropdown selection handler
+dropdown.addEventListener("change", e => {
+  loadProductDetails(e.target.value);
+});
 
+// Edit button
 editBtn?.addEventListener("click", () => {
   toggleForm(true);
   mode = "edit";
 });
 
+// Add new product
 newBtn?.addEventListener("click", () => {
   currentProductId = null;
   mode = "add";
