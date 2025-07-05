@@ -1,26 +1,146 @@
 /* admin.css */
 
-body { font-family: 'Segoe UI', sans-serif; background-color: #f4f4f4; margin: 0; padding: 0; }
+/* Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:wght@500;700&display=swap');
 
-#admin-container { max-width: 800px; margin: 40px auto; padding: 20px; background-color: #fff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #f7f3f0;
+  color: #3b3b3b;
+  margin: 0;
+  padding: 0;
+}
 
-h1, h2 { color: #333; }
+#admin-container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px 24px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
 
-.section { margin-top: 30px; }
+h1, h2 {
+  font-family: 'Playfair Display', serif;
+  color: #3b3b3b;
+  margin-top: 0;
+}
 
-label { display: block; margin-top: 10px; font-weight: bold; }
+.section {
+  margin-top: 30px;
+}
 
-input[type="text"], input[type="number"], select { width: 100%; padding: 8px; margin-top: 4px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+label {
+  display: block;
+  margin-top: 12px;
+  font-weight: 600;
+  color: #5a5a5a;
+  font-size: 15px;
+}
 
-input[type="file"] { margin-top: 8px; }
+input[type="text"],
+input[type="number"],
+select {
+  width: 100%;
+  padding: 10px 12px;
+  margin-top: 6px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  box-sizing: border-box;
+  background-color: #fafafa;
+  color: #3b3b3b;
+}
 
-#sizeCheckboxes label { margin-right: 10px; }
+input[type="file"] {
+  margin-top: 10px;
+}
 
-button { margin-top: 20px; padding: 10px 16px; background-color: #333; color: white; border: none; border-radius: 4px; cursor: pointer; }
+#sizeCheckboxes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 8px;
+}
+#sizeCheckboxes label {
+  font-weight: 400;
+  color: #5a5a5a;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
 
-button:hover { background-color: #555; }
+button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 15px;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
 
-#imagePreviewContainer { margin-top: 10px; display: flex; gap: 10px; flex-wrap: wrap; }
+#editBtn,
+#saveBtn {
+  background-color: #8e3b80;
+  color: #ffffff;
+}
 
-img { max-width: 100%; border-radius: 4px; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1); }
+#newProductBtn {
+  background-color: #a64242;
+  color: #ffffff;
+  margin-left: 8px;
+}
 
+button:hover {
+  opacity: 0.9;
+}
+
+/* Image preview section */
+#imagePreviewContainer {
+  margin-top: 12px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+#imagePreviewContainer .image-box {
+  position: relative;
+  display: inline-block;
+}
+
+#imagePreviewContainer .image-box img {
+  width: 80px;
+  height: auto;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+#imagePreviewContainer .remove-btn {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background-color: #a64242;
+  color: #ffffff;
+  border: none;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+#imagePreviewContainer .remove-btn:hover {
+  background-color: #8e3b80;
+}
+
+select:disabled,
+input:disabled {
+  background-color: #f0f0f0;
+  cursor: not-allowed;
+}
