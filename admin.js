@@ -1,15 +1,15 @@
-// admin.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
 import {
   getFirestore, collection, doc, addDoc, updateDoc, getDoc, getDocs
 } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 import {
-  getStorage, ref, uploadBytes, getDownloadURL, deleteObject
+  getStorage, ref, uploadBytes, getDownloadURL
 } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-storage.js";
 import {
   getAuth, onAuthStateChanged, signOut
 } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
 
+// Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyCnunf_kT-rRqgYJyRUKzPKT1O1AgwCXRo",
   authDomain: "oddfit-2cce7.firebaseapp.com",
@@ -24,6 +24,7 @@ const db = getFirestore(app);
 const storage = getStorage(app);
 const auth = getAuth(app);
 
+// UI Elements
 const dropdown = document.getElementById("productDropdown");
 const form = document.getElementById("productForm");
 const nameInput = document.getElementById("productName");
@@ -40,8 +41,8 @@ const newBtn = document.getElementById("newProductBtn");
 
 let currentProductId = null;
 let mode = "view";
-let currentImageUrls = [];
-let removedImageIndexes = [];
+let existingImageUrls = [];
+let newImageFiles = [];
 
 onAuthStateChanged(auth, user => {
   if (!user) location.href = "login.html";
@@ -110,44 +111,71 @@ async function loadProductDetails(id) {
 
   const data = snap.data();
   currentProductId = id;
-  currentImageUrls = Array.isArray(data.image_url) ? [...data.image_url] : [data.image_url];
-  removedImageIndexes = [];
 
   nameInput.value = data.product_name || "";
   colorInput.value = data.color || "";
   priceInput.value = data.price || "";
   availableInput.value = data.available ? "true" : "false";
+
   await loadCategories(data.category || "");
+
   Array.from(sizeCheckboxes.querySelectorAll("input")).forEach(cb => {
     cb.checked = (data.size || []).includes(cb.value);
   });
 
-  imagePreview.innerHTML = currentImageUrls.map((url, index) => `
-    <div style="display:inline-block;position:relative;margin:5px;">
-      <img src="${url}" width="80" />
-      <button type="button" class="delete-image-btn" data-index="${index}" style="position:absolute;top:0;right:0;">&times;</button>
-    </div>
-  `).join("");
+  existingImageUrls = Array.isArray(data.image_url) ? data.image_url : [data.image_url];
+  newImageFiles = [];
 
-  imagePreview.querySelectorAll(".delete-image-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const index = parseInt(btn.dataset.index);
-      removedImageIndexes.push(index);
-      btn.parentElement.remove();
-    });
-  });
-
+  renderImagePreview();
   toggleForm(false);
   mode = "view";
 }
 
+function renderImagePreview() {
+  imagePreview.innerHTML = "";
+
+  existingImageUrls.forEach((url, index) => {
+    const wrapper = document.createElement("div");
+    wrapper.className = "image-box";
+    wrapper.innerHTML = `<img src="${url}" /><button class="remove-btn" data-index="${index}">×</button>`;
+    imagePreview.appendChild(wrapper);
+  });
+
+  newImageFiles.forEach((file, index) => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      const wrapper = document.createElement("div");
+      wrapper.className = "image-box";
+      wrapper.innerHTML = `<img src="${e.target.result}" /><button class="remove-btn new" data-index="${index}">×</button>`;
+      imagePreview.appendChild(wrapper);
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+imagePreview.addEventListener("click", e => {
+  if (e.target.classList.contains("remove-btn")) {
+    const index = parseInt(e.target.dataset.index);
+    if (e.target.classList.contains("new")) {
+      newImageFiles.splice(index, 1);
+    } else {
+      existingImageUrls.splice(index, 1);
+    }
+    renderImagePreview();
+  }
+});
+
+imageInput.addEventListener("change", () => {
+  newImageFiles = Array.from(imageInput.files);
+  renderImagePreview();
+});
+
 form.addEventListener("submit", async e => {
   e.preventDefault();
   const formData = getFormData();
+  const imageUrls = [...existingImageUrls];
 
-  const imageFiles = imageInput.files;
-  const imageUrls = [];
-  for (const file of imageFiles) {
+  for (const file of newImageFiles) {
     const refPath = `assets/images/products/${Date.now()}_${file.name}`;
     const imgRef = ref(storage, refPath);
     await uploadBytes(imgRef, file);
@@ -155,8 +183,7 @@ form.addEventListener("submit", async e => {
     imageUrls.push(url);
   }
 
-  const updatedUrls = currentImageUrls.filter((_, idx) => !removedImageIndexes.includes(idx));
-  formData.image_url = [...updatedUrls, ...imageUrls];
+  formData.image_url = imageUrls;
 
   if (mode === "edit" && currentProductId) {
     await updateDoc(doc(db, "products", currentProductId), formData);
@@ -167,24 +194,30 @@ form.addEventListener("submit", async e => {
   }
 
   form.reset();
-  imagePreview.innerHTML = "";
+  imageInput.value = "";
+  existingImageUrls = [];
+  newImageFiles = [];
+  renderImagePreview();
   await loadDropdown();
   toggleForm(false);
 });
 
 dropdown.addEventListener("change", e => loadProductDetails(e.target.value));
+
 editBtn?.addEventListener("click", () => {
   toggleForm(true);
   mode = "edit";
 });
+
 newBtn?.addEventListener("click", () => {
   currentProductId = null;
   mode = "add";
   form.reset();
-  imagePreview.innerHTML = "";
-  currentImageUrls = [];
-  removedImageIndexes = [];
+  imageInput.value = "";
+  existingImageUrls = [];
+  newImageFiles = [];
   Array.from(sizeCheckboxes.querySelectorAll("input")).forEach(cb => cb.checked = false);
+  renderImagePreview();
   toggleForm(true);
 });
 
