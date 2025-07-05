@@ -1,15 +1,15 @@
+// admin.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
 import {
   getFirestore, collection, doc, addDoc, updateDoc, getDoc, getDocs
 } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 import {
-  getStorage, ref, uploadBytes, getDownloadURL
+  getStorage, ref, uploadBytes, getDownloadURL, deleteObject
 } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-storage.js";
 import {
   getAuth, onAuthStateChanged, signOut
 } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
 
-// Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyCnunf_kT-rRqgYJyRUKzPKT1O1AgwCXRo",
   authDomain: "oddfit-2cce7.firebaseapp.com",
@@ -24,7 +24,6 @@ const db = getFirestore(app);
 const storage = getStorage(app);
 const auth = getAuth(app);
 
-// UI Elements
 const dropdown = document.getElementById("productDropdown");
 const form = document.getElementById("productForm");
 const nameInput = document.getElementById("productName");
@@ -41,6 +40,8 @@ const newBtn = document.getElementById("newProductBtn");
 
 let currentProductId = null;
 let mode = "view";
+let currentImageUrls = [];
+let removedImageIndexes = [];
 
 onAuthStateChanged(auth, user => {
   if (!user) location.href = "login.html";
@@ -50,12 +51,11 @@ onAuthStateChanged(auth, user => {
 window.logout = () => signOut(auth).then(() => location.href = "login.html");
 
 async function init() {
-  await loadCategories();   // Load category options first
-  await loadDropdown();     // Load product list
-  renderSizes();            // Load size checkboxes
+  await loadCategories();
+  await loadDropdown();
+  renderSizes();
 }
 
-// Load product list into dropdown
 async function loadDropdown() {
   dropdown.innerHTML = '<option value="">-- Select Product --</option>';
   const snap = await getDocs(collection(db, "products"));
@@ -67,7 +67,6 @@ async function loadDropdown() {
   });
 }
 
-// Load category options
 async function loadCategories(selected = null) {
   categoryInput.innerHTML = "";
   const snap = await getDocs(collection(db, "categories"));
@@ -98,14 +97,11 @@ function renderSizes() {
 function toggleForm(editable) {
   [nameInput, categoryInput, colorInput, priceInput, imageInput, availableInput]
     .forEach(input => input.disabled = !editable);
-
   Array.from(sizeCheckboxes.querySelectorAll("input")).forEach(cb => cb.disabled = !editable);
-
   saveBtn.style.display = editable ? "inline-block" : "none";
-  editBtn.style.display = editable && mode === "edit" ? "none" : "inline-block";
+  editBtn.style.display = editable ? "none" : "inline-block";
 }
 
-// Load selected product details
 async function loadProductDetails(id) {
   if (!id) return;
   const docRef = doc(db, "products", id);
@@ -114,41 +110,43 @@ async function loadProductDetails(id) {
 
   const data = snap.data();
   currentProductId = id;
+  currentImageUrls = Array.isArray(data.image_url) ? [...data.image_url] : [data.image_url];
+  removedImageIndexes = [];
 
   nameInput.value = data.product_name || "";
   colorInput.value = data.color || "";
   priceInput.value = data.price || "";
   availableInput.value = data.available ? "true" : "false";
-
-  // Ensure categories are loaded and selected
   await loadCategories(data.category || "");
-
-  // Load selected sizes
   Array.from(sizeCheckboxes.querySelectorAll("input")).forEach(cb => {
     cb.checked = (data.size || []).includes(cb.value);
   });
 
-  // Load images
-  if (Array.isArray(data.image_url)) {
-    imagePreview.innerHTML = data.image_url.map(url => `<img src="${url}" width="80" />`).join("");
-  } else if (typeof data.image_url === "string" && data.image_url.trim()) {
-    imagePreview.innerHTML = `<img src="${data.image_url}" width="80" />`;
-  } else {
-    imagePreview.innerHTML = "<em>No images uploaded</em>";
-  }
+  imagePreview.innerHTML = currentImageUrls.map((url, index) => `
+    <div style="display:inline-block;position:relative;margin:5px;">
+      <img src="${url}" width="80" />
+      <button type="button" class="delete-image-btn" data-index="${index}" style="position:absolute;top:0;right:0;">&times;</button>
+    </div>
+  `).join("");
+
+  imagePreview.querySelectorAll(".delete-image-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const index = parseInt(btn.dataset.index);
+      removedImageIndexes.push(index);
+      btn.parentElement.remove();
+    });
+  });
 
   toggleForm(false);
   mode = "view";
 }
 
-// Form submission (add or update)
 form.addEventListener("submit", async e => {
   e.preventDefault();
   const formData = getFormData();
 
   const imageFiles = imageInput.files;
   const imageUrls = [];
-
   for (const file of imageFiles) {
     const refPath = `assets/images/products/${Date.now()}_${file.name}`;
     const imgRef = ref(storage, refPath);
@@ -157,7 +155,8 @@ form.addEventListener("submit", async e => {
     imageUrls.push(url);
   }
 
-  if (imageUrls.length > 0) formData.image_url = imageUrls;
+  const updatedUrls = currentImageUrls.filter((_, idx) => !removedImageIndexes.includes(idx));
+  formData.image_url = [...updatedUrls, ...imageUrls];
 
   if (mode === "edit" && currentProductId) {
     await updateDoc(doc(db, "products", currentProductId), formData);
@@ -173,28 +172,22 @@ form.addEventListener("submit", async e => {
   toggleForm(false);
 });
 
-// Dropdown selection handler
-dropdown.addEventListener("change", e => {
-  loadProductDetails(e.target.value);
-});
-
-// Edit button
+dropdown.addEventListener("change", e => loadProductDetails(e.target.value));
 editBtn?.addEventListener("click", () => {
   toggleForm(true);
   mode = "edit";
 });
-
-// Add new product
 newBtn?.addEventListener("click", () => {
   currentProductId = null;
   mode = "add";
   form.reset();
   imagePreview.innerHTML = "";
+  currentImageUrls = [];
+  removedImageIndexes = [];
   Array.from(sizeCheckboxes.querySelectorAll("input")).forEach(cb => cb.checked = false);
   toggleForm(true);
 });
 
-// Collect form data
 function getFormData() {
   const sizes = Array.from(sizeCheckboxes.querySelectorAll("input:checked"))
     .map(cb => cb.value);
